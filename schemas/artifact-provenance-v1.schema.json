@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://git.home.siczb.de/siczb/repository-standards/schemas/artifact-provenance-v1.schema.json",
+  "title": "Artifact provenance v1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schemaVersion",
+    "releaseState",
+    "commit",
+    "buildNumber",
+    "buildTime"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "releaseState": {
+      "enum": [
+        "non-release",
+        "release-candidate",
+        "release"
+      ]
+    },
+    "commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{7,40}$"
+    },
+    "buildNumber": {
+      "oneOf": [
+        {
+          "type": "integer",
+          "minimum": 1
+        },
+        {
+          "type": "string",
+          "minLength": 1
+        }
+      ]
+    },
+    "buildTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "releaseVersion": {
+      "type": "string"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "releaseState": {
+            "const": "non-release"
+          }
+        },
+        "required": [
+          "releaseState"
+        ]
+      },
+      "then": {
+        "not": {
+          "required": [
+            "releaseVersion"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "releaseState": {
+            "const": "release-candidate"
+          }
+        },
+        "required": [
+          "releaseState"
+        ]
+      },
+      "then": {
+        "required": [
+          "releaseVersion"
+        ],
+        "properties": {
+          "releaseVersion": {
+            "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+-rc\\.[0-9]+(?:\\+[0-9A-Za-z.-]+)?$"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "releaseState": {
+            "const": "release"
+          }
+        },
+        "required": [
+          "releaseState"
+        ]
+      },
+      "then": {
+        "required": [
+          "releaseVersion"
+        ],
+        "properties": {
+          "releaseVersion": {
+            "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:\\+[0-9A-Za-z.-]+)?$"
+          }
+        }
+      }
+    }
+  ]
+}

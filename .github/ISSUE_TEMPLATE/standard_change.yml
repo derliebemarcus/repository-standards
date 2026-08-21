@@ -1,0 +1,50 @@
+name: Standard Change Proposal
+description: Propose a new or changed normative Repository Standards requirement.
+title: "[Standard] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Published standard versions are immutable. Changes to obligations or incompatible semantics normally require a new versioned contract boundary.
+  - type: input
+    id: standard
+    attributes:
+      label: Affected standard or contract family
+      placeholder: Development Workflow, Ticket Specification, Web Application Baseline, ...
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What problem should the standard solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed requirement or semantic change
+      description: Describe the intended normative behavior as precisely as possible.
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility and migration impact
+      description: Which pinned consumers could be affected and what migration boundary is needed?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Which alternatives or non-normative solutions were considered?
+    validations:
+      required: true
+  - type: checkboxes
+    id: governance
+    attributes:
+      label: Governance
+      options:
+        - label: I understand that accepted changes are implemented and qualified in the canonical Forgejo repository, not through a GitHub pull request.
+          required: true

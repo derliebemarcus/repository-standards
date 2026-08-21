@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://git.home.siczb.de/siczb/repository-standards/schemas/repository-standards-v1.schema.json",
+  "title": "Repository standards declaration v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "standards",
+    "branching"
+  ],
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "standards": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ticket-specification",
+        "development-workflow",
+        "repository-documentation"
+      ],
+      "properties": {
+        "ticket-specification": {
+          "const": "v1"
+        },
+        "development-workflow": {
+          "const": "v2"
+        },
+        "repository-documentation": {
+          "const": "v1"
+        }
+      }
+    },
+    "branching": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "model",
+            "default_branch",
+            "multibranch_filter"
+          ],
+          "properties": {
+            "model": {
+              "const": "single"
+            },
+            "default_branch": {
+              "const": "main"
+            },
+            "multibranch_filter": {
+              "const": "^(main|develop|PR-[0-9]+)$"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "model",
+            "default_branch",
+            "integration_branch",
+            "release_branch",
+            "multibranch_filter"
+          ],
+          "properties": {
+            "model": {
+              "const": "integration"
+            },
+            "default_branch": {
+              "const": "develop"
+            },
+            "integration_branch": {
+              "const": "develop"
+            },
+            "release_branch": {
+              "const": "main"
+            },
+            "multibranch_filter": {
+              "const": "^(main|develop|PR-[0-9]+)$"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

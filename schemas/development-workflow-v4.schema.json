@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://git.home.siczb.de/siczb/repository-standards/schemas/development-workflow-v4.schema.json",
+  "title": "Development Workflow v4 machine-readable profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "standard",
+    "version",
+    "normative_source",
+    "schema",
+    "requires",
+    "branch_naming",
+    "pull_request_naming",
+    "pre_write_validation",
+    "exemptions",
+    "post_write_validation",
+    "branching",
+    "generated_assets"
+  ],
+  "properties": {
+    "standard": {"const": "development-workflow"},
+    "version": {"const": "4.0.0"},
+    "normative_source": {"const": "standards/development-workflow/v4/standard.md"},
+    "schema": {"const": "schemas/development-workflow-v4.schema.json"},
+    "requires": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["declaration_schema", "ticket_specification", "repository_documentation"],
+      "properties": {
+        "declaration_schema": {"const": "v4"},
+        "ticket_specification": {"const": "v2"},
+        "repository_documentation": {"const": "v1"}
+      }
+    },
+    "branch_naming": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "prefix_source",
+        "forms",
+        "slug_pattern",
+        "repository_qualified_ticket_repository_must_match",
+        "regular_prefix_must_match_ticket_kind",
+        "undeclared_prefixes_allowed",
+        "hotfix"
+      ],
+      "properties": {
+        "prefix_source": {"const": "profiles/ticket-specification-v2.json#/branch_prefixes"},
+        "forms": {
+          "const": [
+            "<prefix>/<ticket-number>-<ticket-title-slug>",
+            "<prefix>/<repository>-<ticket-number>-<ticket-title-slug>"
+          ]
+        },
+        "slug_pattern": {"const": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+        "repository_qualified_ticket_repository_must_match": {"const": true},
+        "regular_prefix_must_match_ticket_kind": {"const": true},
+        "undeclared_prefixes_allowed": {"const": false},
+        "hotfix": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["prefix_key", "explicit_path_required", "source_branch", "target_branch"],
+          "properties": {
+            "prefix_key": {"const": "hotfix"},
+            "explicit_path_required": {"const": true},
+            "source_branch": {"const": "main"},
+            "target_branch": {"const": "main"}
+          }
+        }
+      }
+    },
+    "pull_request_naming": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ticket_linked_title_form",
+        "summary_required",
+        "branch_ticket_number_must_match_title",
+        "target_must_match_branching_model"
+      ],
+      "properties": {
+        "ticket_linked_title_form": {"const": "#<ticket-number> <summary>"},
+        "summary_required": {"const": true},
+        "branch_ticket_number_must_match_title": {"const": true},
+        "target_must_match_branching_model": {"const": true}
+      }
+    },
+    "pre_write_validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "resolve_pinned_declaration",
+        "validate_complete_pairing",
+        "load_released_profiles",
+        "branch_creation",
+        "ticket_linked_pull_request_creation",
+        "fail_closed"
+      ],
+      "properties": {
+        "resolve_pinned_declaration": {"const": true},
+        "validate_complete_pairing": {"const": true},
+        "load_released_profiles": {"const": true},
+        "branch_creation": {"const": true},
+        "ticket_linked_pull_request_creation": {"const": true},
+        "fail_closed": {"const": true}
+      }
+    },
+    "exemptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["automated_dependency_pull_requests_without_ticket", "legacy_creation_time_cutoff"],
+      "properties": {
+        "automated_dependency_pull_requests_without_ticket": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["may_be_exempt", "must_be_explicitly_identified"],
+          "properties": {
+            "may_be_exempt": {"const": true},
+            "must_be_explicitly_identified": {"const": true}
+          }
+        },
+        "legacy_creation_time_cutoff": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["allowed"],
+          "properties": {"allowed": {"const": false}}
+        }
+      }
+    },
+    "post_write_validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["recommended", "defense_in_depth", "must_match_pre_write_semantics"],
+      "properties": {
+        "recommended": {"const": true},
+        "defense_in_depth": {"const": true},
+        "must_match_pre_write_semantics": {"const": true}
+      }
+    },
+    "branching": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["models", "multibranch_filter"],
+      "properties": {
+        "models": {"const": ["single", "integration"]},
+        "multibranch_filter": {"const": "^(main|develop|PR-[0-9]+)$"}
+      }
+    },
+    "generated_assets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ai_adapter"],
+      "properties": {
+        "ai_adapter": {"const": "reference/ai/development-workflow-v4.md"}
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+documentation:
+  standard: repository-documentation
+  standard_version: 1
+  ruleset_version: 1.1.0
+  profile: application
+  architecture: arc42-lite
+  diagrams: c4
+  decisions: madr
+  publishing: none
+  maintenance:
+    require_impact_declaration: true
+    mappings:
+      - source:
+          - "src/config/**"
+        documentation:
+          - "docs/reference/configuration.md"
+          - "docs/reference/environment-variables.md"
+      - source:
+          - "deploy/**"
+        documentation:
+          - "docs/architecture/deployment.md"
+          - "docs/operations/rollback.md"

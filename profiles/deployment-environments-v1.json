@@ -1,0 +1,52 @@
+{
+  "standard": "deployment-environments",
+  "version": "1.0.0",
+  "normative_source": "standards/deployment-environments/v1/standard.md",
+  "artifact_provenance_schema": "schemas/artifact-provenance-v1.schema.json",
+  "dimensions": [
+    "source",
+    "artifact-release-state",
+    "runtime-environment"
+  ],
+  "environments": {
+    "DEV": {
+      "required_for_continuously_testable_application": true,
+      "accepted_release_states": [
+        "non-release",
+        "release-candidate",
+        "release"
+      ]
+    },
+    "STAGE": {
+      "required": false,
+      "accepted_release_states": [
+        "release-candidate",
+        "release"
+      ]
+    },
+    "PROD": {
+      "required_when_production_exists": true,
+      "accepted_release_states": [
+        "release"
+      ],
+      "immutable_release_artifact_required": true
+    }
+  },
+  "preview": {
+    "canonical_environment": false
+  },
+  "branch_to_dev": {
+    "single": "main",
+    "integration": "develop"
+  },
+  "promotion": {
+    "rebuild_application_content": false,
+    "preserve_artifact_identity": true,
+    "environment_changes_release_state": false,
+    "rollback_uses_existing_release_artifact": true
+  },
+  "validation": {
+    "block_unreleased_prod": true,
+    "block_ambiguous_prod_artifact": true
+  }
+}

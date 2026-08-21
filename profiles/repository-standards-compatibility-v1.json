@@ -1,0 +1,24 @@
+{
+  "contract": "repository-standards-compatibility",
+  "version": "1.0.0",
+  "pairings": [
+    {
+      "declaration_schema": "v1",
+      "schema": "schemas/repository-standards-v1.schema.json",
+      "ticket_specification": "v1",
+      "development_workflow": "v2",
+      "repository_documentation": "v1",
+      "status": "supported"
+    },
+    {
+      "declaration_schema": "v2",
+      "schema": "schemas/repository-standards-v2.schema.json",
+      "ticket_specification": "v2",
+      "development_workflow": "v3",
+      "repository_documentation": "v1",
+      "status": "supported"
+    }
+  ],
+  "unsupported_pairing_policy": "reject",
+  "consumer_activation": "explicit-release-pinned-migration"
+}

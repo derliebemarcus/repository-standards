@@ -1,0 +1,39 @@
+name: Documentation Proposal
+description: Propose an improvement to public Repository Standards documentation or examples.
+title: "[Docs] "
+body:
+  - type: input
+    id: location
+    attributes:
+      label: Documentation location
+      description: Which public file, section, example, or topic should change?
+    validations:
+      required: true
+  - type: input
+    id: audience
+    attributes:
+      label: Audience
+      description: Who needs this documentation?
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or gap
+      description: What is unclear, missing, misleading, or unnecessarily dependent on private context?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed improvement
+      description: Describe the content or structure you would like to see.
+    validations:
+      required: true
+  - type: checkboxes
+    id: governance
+    attributes:
+      label: Governance
+      options:
+        - label: I understand that GitHub pull requests are not accepted and that accepted changes are implemented in the canonical Forgejo repository.
+          required: true

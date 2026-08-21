@@ -1,0 +1,28 @@
+{
+  "profile": "infrastructure",
+  "description": "Infrastructure, configuration, shared tooling, or automation.",
+  "required_topics": [
+    "bootstrap from an empty environment",
+    "accounts, credentials, permissions, plugins, tools, and directories",
+    "deployment topology and dependencies",
+    "secrets handling",
+    "operational runbook",
+    "backup, restore, rollback, and disaster recovery",
+    "safe local equivalents for blocking CI stages"
+  ],
+  "impact_defaults": [
+    {
+      "source": ["infrastructure/**", "deploy/**", "pipelines/**"],
+      "documentation": [
+        "docs/architecture/deployment.md",
+        "docs/operations/runbook.md",
+        "docs/operations/rollback.md"
+      ]
+    },
+    {
+      "source": ["schemas/**", "profiles/**", "standards/**"],
+      "documentation": ["README.md", "docs/reference/compatibility.md"]
+    }
+  ],
+  "reference": "reference/infrastructure"
+}

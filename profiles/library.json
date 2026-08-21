@@ -1,0 +1,30 @@
+{
+  "profile": "library",
+  "description": "Reusable library, Home Assistant integration, or frontend card.",
+  "required_topics": [
+    "supported platform, browser, and runtime versions",
+    "installation and upgrade paths",
+    "manual and ecosystem-specific installation where applicable",
+    "configuration reference and examples",
+    "compatibility and migration notes",
+    "release, versioning, and breaking-change policy"
+  ],
+  "impact_defaults": [
+    {
+      "source": ["src/**", "custom_components/**"],
+      "documentation": [
+        "docs/reference/interfaces.md",
+        "docs/reference/compatibility.md"
+      ]
+    },
+    {
+      "source": ["manifest.json", "package.json", "hacs.json"],
+      "documentation": [
+        "docs/how-to/installation.md",
+        "docs/how-to/upgrade.md",
+        "docs/reference/compatibility.md"
+      ]
+    }
+  ],
+  "reference": "reference/library"
+}

@@ -1,0 +1,51 @@
+name: Bug Report
+description: Report a reproducible defect in the Repository Standards Public Core.
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a problem. Do not include credentials, tokens, private keys, or private infrastructure details.
+  - type: input
+    id: release
+    attributes:
+      label: Repository Standards release
+      description: Which published release or revision are you using?
+      placeholder: v6.0.0
+    validations:
+      required: true
+  - type: input
+    id: contract
+    attributes:
+      label: Contract or asset
+      description: Identify the standard, profile, schema, reference, tool, test, or documentation path involved.
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed behavior
+      description: What happened? Include a minimal reproducible example when possible.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect, and which published contract supports that expectation?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      description: Provide safe steps, commands, or fixture data needed to reproduce the problem.
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Public-data check
+      options:
+        - label: I have removed credentials, secrets, private host details, and other sensitive information.
+          required: true

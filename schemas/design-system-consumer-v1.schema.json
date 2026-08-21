@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://git.home.siczb.de/siczb/repository-standards/schemas/design-system-consumer-v1.schema.json",
+  "title": "Design System consumer decision v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "consumerId",
+    "designSystem",
+    "decision",
+    "integration",
+    "packageManifest",
+    "documentation",
+    "rationale"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "consumerId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$"
+    },
+    "designSystem": { "const": "siczb/design-system" },
+    "decision": {
+      "enum": ["use", "do-not-use"]
+    },
+    "adoption": {
+      "enum": ["active", "planned", "blocked"]
+    },
+    "integration": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$"
+    },
+    "styling": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$"
+    },
+    "packageManifest": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9._/-]+$"
+    },
+    "documentation": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9._/-]+$"
+    },
+    "trackingIssue": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+#[0-9]+$"
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 20
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "decision": { "const": "use" } },
+        "required": ["decision"]
+      },
+      "then": {
+        "required": ["adoption"]
+      },
+      "else": {
+        "not": { "required": ["adoption"] }
+      }
+    },
+    {
+      "if": {
+        "properties": { "adoption": { "const": "blocked" } },
+        "required": ["adoption"]
+      },
+      "then": {
+        "required": ["trackingIssue"]
+      }
+    }
+  ]
+}

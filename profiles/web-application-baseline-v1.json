@@ -1,0 +1,78 @@
+{
+  "standard": "web-application-baseline",
+  "version": "1.0.0",
+  "normative_source": "standards/web-application-baseline/v1/standard.md",
+  "artifact_provenance_schema": "schemas/artifact-provenance-v1.schema.json",
+  "scope": "explicitly-adopted-user-facing-web",
+  "required_pages": [
+    {
+      "id": "imprint",
+      "route": "/impressum"
+    },
+    {
+      "id": "privacy",
+      "route": "/datenschutz"
+    },
+    {
+      "id": "accessibility",
+      "route": "/barrierefreiheit"
+    }
+  ],
+  "navigation": {
+    "global": true,
+    "same_browsing_context": true,
+    "authentication_required": false
+  },
+  "design": {
+    "same_application_shell": true,
+    "honor_design_system_decision": true,
+    "same_accessibility_gates": true,
+    "standalone_legal_theme_allowed": false
+  },
+  "accessibility_statement": {
+    "required_topics": [
+      "covered-application",
+      "accessibility-target",
+      "conformance-status",
+      "known-limitations",
+      "alternatives-where-applicable",
+      "feedback-contact",
+      "prepared-or-reviewed-date"
+    ],
+    "jurisdiction_specific_content": "consumer-owned"
+  },
+  "artifact_release_states": {
+    "non-release": {
+      "public_footer_fields": [
+        "commit",
+        "build_number",
+        "build_time"
+      ]
+    },
+    "release-candidate": {
+      "public_footer_fields": [
+        "release_version",
+        "build_number",
+        "build_time"
+      ]
+    },
+    "release": {
+      "public_footer_fields": [
+        "release_version"
+      ]
+    }
+  },
+  "public_provenance_locations": [
+    "/impressum",
+    "/datenschutz",
+    "/barrierefreiheit"
+  ],
+  "build_time": {
+    "machine_format": "iso-8601-with-timezone",
+    "localized_human_display_allowed": true
+  },
+  "validation": {
+    "blocking": true,
+    "legal_compliance_claim": false
+  }
+}

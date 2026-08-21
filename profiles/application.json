@@ -1,0 +1,27 @@
+{
+  "profile": "application",
+  "description": "Deployed application or service.",
+  "required_topics": [
+    "runtime and deployment architecture",
+    "configuration and environment variables",
+    "operational runbook",
+    "monitoring and alerting",
+    "backup, restore, rollback, and disaster recovery",
+    "authentication, authorization, and data protection where applicable"
+  ],
+  "impact_defaults": [
+    {
+      "source": ["src/**", "app/**"],
+      "documentation": ["docs/reference/interfaces.md", "docs/explanation/concepts.md"]
+    },
+    {
+      "source": ["deploy/**", "Containerfile", "Dockerfile"],
+      "documentation": [
+        "docs/architecture/deployment.md",
+        "docs/how-to/deployment.md",
+        "docs/operations/rollback.md"
+      ]
+    }
+  ],
+  "reference": "reference/application"
+}

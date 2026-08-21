@@ -1,0 +1,25 @@
+documentation:
+  standard: repository-documentation
+  standard_version: 1
+  ruleset_version: 1.1.0
+  profile: library
+  architecture: arc42-lite
+  diagrams: c4
+  decisions: madr
+  publishing: none
+  maintenance:
+    require_impact_declaration: true
+    mappings:
+      - source:
+          - "src/**"
+          - "custom_components/**"
+        documentation:
+          - "docs/reference/interfaces.md"
+          - "docs/reference/compatibility.md"
+      - source:
+          - "manifest.json"
+          - "package.json"
+          - "hacs.json"
+        documentation:
+          - "docs/how-to/installation.md"
+          - "docs/how-to/upgrade.md"
