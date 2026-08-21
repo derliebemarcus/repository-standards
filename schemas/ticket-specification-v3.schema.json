@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://git.home.siczb.de/siczb/repository-standards/schemas/ticket-specification-v3.schema.json",
+  "title": "Ticket Specification v3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["title", "assignee", "areas", "kind", "priority", "status", "state", "estimate", "description", "relations", "validation", "impacts"],
+  "properties": {
+    "title": {"type": "string", "minLength": 1},
+    "assignee": {"type": "string", "minLength": 1, "default": "marcus"},
+    "areas": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^Area/.+"}},
+    "kind": {"enum": ["Kind/Epic", "Kind/Feature", "Kind/Enhancement", "Kind/Refactoring", "Kind/Maintenance", "Kind/Research", "Kind/Bug", "Kind/Security", "Kind/Documentation", "Kind/Testing"]},
+    "priority": {"enum": ["Priority/Critical", "Priority/High", "Priority/Normal", "Priority/Low"], "default": "Priority/Low"},
+    "status": {"enum": ["Status/Backlog", "Status/Need More Info", "Status/Blocked", "Status/Ready", "Status/In Progress", "Status/Review", "Status/Abandoned", "Status/Done"], "default": "Status/Backlog"},
+    "state": {"enum": ["open", "closed"], "default": "open"},
+    "estimate": {"oneOf": [{"type": "integer", "enum": [1, 2, 3, 5, 8, 13]}, {"type": "null"}]},
+    "description": {
+      "type": "object", "additionalProperties": false,
+      "required": ["context", "goal", "scope", "requirements", "acceptance_criteria", "work_type_details"],
+      "properties": {
+        "context": {"type": "string"}, "goal": {"type": "string"},
+        "scope": {"type": "object", "additionalProperties": false, "required": ["in_scope", "out_of_scope", "affected_components"], "properties": {
+          "in_scope": {"type": "array", "items": {"type": "string"}},
+          "out_of_scope": {"type": "array", "items": {"type": "string"}},
+          "affected_components": {"type": "array", "items": {"type": "string"}}
+        }},
+        "requirements": {"type": "array", "items": {"type": "string"}},
+        "acceptance_criteria": {"type": "array", "items": {"type": "string"}},
+        "work_type_details": {"type": "string"}
+      }
+    },
+    "relations": {"type": "object", "additionalProperties": false, "required": ["parent", "blocked_by", "blocks", "related"], "properties": {
+      "parent": {"oneOf": [{"type": "string"}, {"type": "null"}]},
+      "blocked_by": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+      "blocks": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+      "related": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+    }},
+    "validation": {"type": "object", "additionalProperties": false, "required": ["tests_or_research", "documentation"], "properties": {
+      "tests_or_research": {"type": "string"}, "documentation": {"type": "string"}
+    }},
+    "impacts": {"type": "object", "additionalProperties": false, "required": ["security", "compatibility", "deployment"], "properties": {
+      "security": {"$ref": "#/$defs/impact"}, "compatibility": {"$ref": "#/$defs/impact"}, "deployment": {"$ref": "#/$defs/impact"}
+    }},
+    "research_timebox": {"oneOf": [{"type": "string", "minLength": 1}, {"type": "null"}]}
+  },
+  "$defs": {"impact": {"type": "object", "additionalProperties": false, "required": ["classification", "detail"], "properties": {
+    "classification": {"enum": ["No impact", "Impact identified", "Not yet determined"]}, "detail": {"type": "string"}
+  }}},
+  "allOf": [
+    {"if": {"properties": {"kind": {"const": "Kind/Epic"}}}, "then": {"properties": {"estimate": {"type": "null"}}}},
+    {"if": {"properties": {"status": {"const": "Status/Ready"}, "kind": {"not": {"const": "Kind/Epic"}}}, "required": ["status", "kind"]}, "then": {"properties": {"estimate": {"type": "integer", "enum": [1, 2, 3, 5, 8, 13]}}}},
+    {"if": {"properties": {"kind": {"const": "Kind/Research"}}}, "then": {"required": ["research_timebox"], "properties": {"research_timebox": {"type": "string", "minLength": 1}}}},
+    {"if": {"properties": {"state": {"const": "closed"}}, "required": ["state"]}, "then": {"properties": {"status": {"const": "Status/Done"}}}},
+    {"if": {"properties": {"state": {"const": "open"}}, "required": ["state"]}, "then": {"properties": {"status": {"not": {"const": "Status/Done"}}}}},
+    {"if": {"properties": {"status": {"const": "Status/Done"}}, "required": ["status"]}, "then": {"properties": {"state": {"const": "closed"}}}}
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "standard": "development-workflow",
+  "version": "5.0.0",
+  "normative_source": "standards/development-workflow/v5/standard.md",
+  "schema": "schemas/development-workflow-v5.schema.json",
+  "requires": {
+    "declaration_schema": "v5",
+    "ticket_specification": "v3",
+    "repository_documentation": "v1"
+  },
+  "branch_naming": {
+    "prefix_source": "profiles/ticket-specification-v3.json#/branch_prefixes",
+    "forms": [
+      "<prefix>/<ticket-number>-<ticket-title-slug>",
+      "<prefix>/<repository>-<ticket-number>-<ticket-title-slug>"
+    ],
+    "slug_pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+    "repository_qualified_ticket_repository_must_match": true,
+    "regular_prefix_must_match_ticket_kind": true,
+    "undeclared_prefixes_allowed": false,
+    "hotfix": {
+      "prefix_key": "hotfix",
+      "explicit_path_required": true,
+      "source_branch": "main",
+      "target_branch": "main"
+    }
+  },
+  "pull_request_naming": {
+    "ticket_linked_title_form": "#<ticket-number> <summary>",
+    "summary_required": true,
+    "branch_ticket_number_must_match_title": true,
+    "target_must_match_branching_model": true
+  },
+  "pre_write_validation": {
+    "resolve_pinned_declaration": true,
+    "validate_complete_pairing": true,
+    "load_released_profiles": true,
+    "branch_creation": true,
+    "ticket_linked_pull_request_creation": true,
+    "fail_closed": true
+  },
+  "exemptions": {
+    "automated_dependency_pull_requests_without_ticket": {
+      "may_be_exempt": true,
+      "must_be_explicitly_identified": true
+    },
+    "legacy_creation_time_cutoff": {
+      "allowed": false
+    }
+  },
+  "post_write_validation": {
+    "recommended": true,
+    "defense_in_depth": true,
+    "must_match_pre_write_semantics": true
+  },
+  "branching": {
+    "models": ["single", "integration"],
+    "multibranch_filter": "^(main|develop|PR-[0-9]+)$"
+  },
+  "generated_assets": {
+    "ai_adapter": "reference/ai/development-workflow-v5.md"
+  }
+}
