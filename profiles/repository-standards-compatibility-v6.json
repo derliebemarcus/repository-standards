@@ -1,0 +1,20 @@
+{
+  "contract": "repository-standards-compatibility",
+  "version": "6.0.0",
+  "supersedes": "profiles/repository-standards-compatibility-v5.json",
+  "pairings": [
+    {"declaration_schema":"v1","schema":"schemas/repository-standards-v1.schema.json","ticket_specification":"v1","development_workflow":"v2","repository_documentation":"v1","status":"supported"},
+    {"declaration_schema":"v2","schema":"schemas/repository-standards-v2.schema.json","ticket_specification":"v2","development_workflow":"v3","repository_documentation":"v1","status":"supported"},
+    {"declaration_schema":"v3","schema":"schemas/repository-standards-v3.schema.json","ticket_specification":"v2","development_workflow":"v3","repository_documentation":"v1","web_application_baseline":"v1","deployment_environments":"v1","status":"supported"},
+    {"declaration_schema":"v4","schema":"schemas/repository-standards-v4.schema.json","ticket_specification":"v2","development_workflow":"v4","repository_documentation":"v1","status":"supported"},
+    {"declaration_schema":"v4","schema":"schemas/repository-standards-v4.schema.json","ticket_specification":"v2","development_workflow":"v4","repository_documentation":"v1","web_application_baseline":"v1","deployment_environments":"v1","status":"supported"},
+    {"declaration_schema":"v5","schema":"schemas/repository-standards-v5.schema.json","ticket_specification":"v3","development_workflow":"v5","repository_documentation":"v1","status":"supported"},
+    {"declaration_schema":"v5","schema":"schemas/repository-standards-v5.schema.json","ticket_specification":"v3","development_workflow":"v5","repository_documentation":"v1","web_application_baseline":"v1","deployment_environments":"v1","status":"supported"},
+    {"declaration_schema":"v6","schema":"schemas/repository-standards-v6.schema.json","ticket_specification":"v3","development_workflow":"v5","repository_documentation":"v1","technology_baseline":"v1","status":"supported"},
+    {"declaration_schema":"v6","schema":"schemas/repository-standards-v6.schema.json","ticket_specification":"v3","development_workflow":"v5","repository_documentation":"v1","technology_baseline":"v1","web_application_baseline":"v1","deployment_environments":"v1","status":"supported"},
+    {"declaration_schema":"v7","schema":"schemas/repository-standards-v7.schema.json","ticket_specification":"v3","development_workflow":"v6","repository_documentation":"v1","technology_baseline":"v1","status":"supported"},
+    {"declaration_schema":"v7","schema":"schemas/repository-standards-v7.schema.json","ticket_specification":"v3","development_workflow":"v6","repository_documentation":"v1","technology_baseline":"v1","web_application_baseline":"v1","deployment_environments":"v1","status":"supported"}
+  ],
+  "unsupported_pairing_policy": "reject",
+  "consumer_activation": "explicit-release-pinned-migration"
+}

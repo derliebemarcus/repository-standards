@@ -1,0 +1,84 @@
+{
+  "contract": "technology-baseline",
+  "version": "1.0.0",
+  "normative_source": "standards/technology-baseline/v1/standard.md",
+  "review": {
+    "automated_check_max_interval_days": 7,
+    "governance_review_max_interval_days": 92,
+    "migration_window_days": 90,
+    "security_updates_follow_security_policy": true
+  },
+  "technologies": {
+    "java": {
+      "policy": "current-lts",
+      "initial_line": "25",
+      "distribution": "OpenJDK",
+      "build": "gradle-wrapper",
+      "server_framework_preference": "spring-boot"
+    },
+    "nodejs": {
+      "policy": "current-lts",
+      "initial_line": "24",
+      "package_manager": "npm"
+    },
+    "python": {
+      "policy": "current-supported-stable-feature-line",
+      "initial_line": "3.14"
+    },
+    "frontend_framework": {
+      "policy": "design-system-governed"
+    },
+    "postgresql": {
+      "policy": "current-stable-major",
+      "initial_line": "18"
+    },
+    "postgis": {
+      "policy": "current-stable-compatible-line",
+      "initial_line": "3.6"
+    },
+    "sqlite": {
+      "policy": "current-stable-when-used",
+      "runtime_bundled_version_must_be_verified_in_ci": true
+    }
+  },
+  "containers": {
+    "latest_tag_allowed": false,
+    "release_digest_pinning": "should",
+    "multi_stage_build": "should",
+    "runtime_build_tools_allowed": false,
+    "non_root": "should-where-supported",
+    "preferred_linux_family": "debian-glibc-slim",
+    "approved_families": {
+      "python": "official-python-slim",
+      "nodejs": "official-node-bookworm-slim",
+      "java": "eclipse-temurin",
+      "postgresql": "official-postgresql",
+      "postgis": "official-postgis",
+      "static_binary": "scratch-when-appropriate",
+      "third_party": "upstream-vendor-supported"
+    }
+  },
+  "findings": {
+    "notify_on_new": true,
+    "notify_on_material_change": true,
+    "renotify_open_max_interval_days": 7,
+    "notify_when_clean": false,
+    "deadline_expiry_central_result": "failure",
+    "deadline_expiry_consumer_gate": "block"
+  },
+  "externalization": {
+    "personal_notification_addresses_allowed": false,
+    "notification_address_placeholder": "${TECHNOLOGY_BASELINE_NOTIFICATION_EMAIL}"
+  },
+  "exceptions": {
+    "adr_required": true,
+    "required_fields": [
+      "rationale",
+      "owner",
+      "tracking_ticket",
+      "review_or_expiry_date",
+      "affected_technology_and_repositories",
+      "migration_or_retirement_condition"
+    ]
+  }
+}

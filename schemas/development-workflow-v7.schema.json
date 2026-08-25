@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://git.home.siczb.de/siczb/repository-standards/schemas/development-workflow-v7.schema.json",
+  "title": "Development Workflow v7 machine-readable profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "standard",
+    "version",
+    "normative_source",
+    "schema",
+    "requires",
+    "branch_naming",
+    "pull_request_naming",
+    "pull_request_supersession",
+    "pre_write_validation",
+    "exemptions",
+    "post_write_validation",
+    "required_checks",
+    "branching",
+    "generated_assets"
+  ],
+  "properties": {
+    "standard": {"const": "development-workflow"},
+    "version": {"const": "7.0.0"},
+    "normative_source": {"const": "standards/development-workflow/v7/standard.md"},
+    "schema": {"const": "schemas/development-workflow-v7.schema.json"},
+    "requires": {"const": {
+      "declaration_schema": "v8",
+      "ticket_specification": "v3",
+      "repository_documentation": "v2"
+    }},
+    "branch_naming": {"const": {
+      "prefix_source": "profiles/ticket-specification-v3.json#/branch_prefixes",
+      "forms": [
+        "<prefix>/<ticket-number>-<ticket-title-slug>",
+        "<prefix>/<repository>-<ticket-number>-<ticket-title-slug>"
+      ],
+      "slug_pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "repository_qualified_ticket_repository_must_match": true,
+      "regular_prefix_must_match_ticket_kind": true,
+      "undeclared_prefixes_allowed": false,
+      "hotfix": {
+        "prefix_key": "hotfix",
+        "explicit_path_required": true,
+        "source_branch": "main",
+        "target_branch": "main"
+      }
+    }},
+    "pull_request_naming": {"const": {
+      "ticket_linked_title_form": "#<ticket-number> <summary>",
+      "summary_required": true,
+      "branch_ticket_number_must_match_title": true,
+      "target_must_match_branching_model": true
+    }},
+    "pull_request_supersession": {"const": {
+      "heading": "# Superseded by / See other",
+      "position": "first-content",
+      "successor_list": {
+        "style": "unordered",
+        "minimum_items": 1,
+        "one_pull_request_reference_per_item": true,
+        "prose_allowed": false
+      },
+      "required_label": "Status/Superseded",
+      "label_and_body_marker_must_match": true,
+      "merge_allowed": false,
+      "close_after_successor_exists": "should",
+      "retain_marker_after_close": true,
+      "validate_successor_exists": "should",
+      "self_reference_allowed": false,
+      "infer_from_similarity_or_closed_state": false
+    }},
+    "pre_write_validation": {"const": {
+      "resolve_pinned_declaration": true,
+      "validate_complete_pairing": true,
+      "load_released_profiles": true,
+      "branch_creation": true,
+      "ticket_linked_pull_request_creation": true,
+      "pull_request_supersession_write": true,
+      "fail_closed": true
+    }},
+    "exemptions": {"const": {
+      "automated_dependency_pull_requests_without_ticket": {
+        "may_be_exempt": true,
+        "must_be_explicitly_identified": true
+      },
+      "legacy_creation_time_cutoff": {"allowed": false}
+    }},
+    "post_write_validation": {"const": {
+      "recommended": true,
+      "defense_in_depth": true,
+      "must_match_pre_write_semantics": true
+    }},
+    "required_checks": {"const": {
+      "identity_model": "logical-gate-with-provider-adapter",
+      "mapping_must_be_deterministic": true,
+      "configured_context_must_be_producible": true,
+      "fail_closed": true,
+      "providers": {
+        "forgejo_gitea": {
+          "context_format": "<workflow> / <job> (<event>)",
+          "event_part_of_identity": true,
+          "event_change_requires_identity_migration": true,
+          "workflow_and_branch_protection_migrate_together": true,
+          "bounded_pattern_matching_allowed": true
+        },
+        "github": {
+          "normal_context_format": "<job>",
+          "reusable_context_format": "<job> / <reusable-job>",
+          "event_part_of_identity": false,
+          "workflow_name_part_of_identity": false,
+          "matrix_part_of_identity": false
+        }
+      },
+      "events": {
+        "pull_request": {"pr_content_validation_supported": true},
+        "pull_request_target": {
+          "base_branch_context": true,
+          "privileged_context": true,
+          "untrusted_pr_code_execution_allowed": false,
+          "recommended_uses": ["policy", "metadata", "repository-governance"]
+        }
+      },
+      "migration": {
+        "verify_new_identity_is_produced": true,
+        "update_workflow_and_protection_consistently": true,
+        "reject_stale_unproducible_required_context": true,
+        "must_not_weaken_logical_gate": true,
+        "rollback_evidence_required_until_qualified": true
+      }
+    }},
+    "branching": {"const": {
+      "models": ["single", "integration"],
+      "multibranch_filter": "^(main|develop|PR-[0-9]+)$"
+    }},
+    "generated_assets": {"const": {
+      "ai_adapter": "reference/ai/development-workflow-v7.md"
+    }}
+  }
+}

@@ -2,6 +2,119 @@
 
 All notable changes to the repository standards are recorded here.
 
+## 8.0.0 - 2026-08-25
+
+### Added
+
+- Technology Baseline v1 with normative lifecycle, supported-runtime, container-image, database,
+  exception, review, and automated compliance requirements;
+- Repository Standards declaration schema v6 and compatibility profile v5 for explicit Technology
+  Baseline v1 adoption;
+- Development Workflow v6 with provider-neutral logical required-gate identities and explicit
+  Forgejo/Gitea and GitHub status/check adapters;
+- Repository Standards declaration schema v7 and compatibility profile v6 for explicit Development
+  Workflow v6 adoption;
+- Development Workflow v7 as the immutable successor to v6, adding canonical pull-request
+  supersession semantics while preserving v6 required-check, trust-boundary, branching, release,
+  review, naming, and pre-write behavior;
+- the exact leading supersession marker `# Superseded by / See other`, followed immediately by an
+  unordered list containing at least one concrete successor pull-request reference;
+- the PR metadata label `Status/Superseded`, required to remain coherent with the leading supersession
+  block, plus a normative prohibition on merging superseded pull requests;
+- Repository Documentation v2 with purpose-specific quality criteria for Tutorial, How-to Guide,
+  Reference, Explanation, Architecture, Decision / ADR, Operations / Runbook,
+  Verification / Evidence, and Index / Navigation;
+- an explicit Verification / Evidence class for revision-, build-, release-, test-, audit-, and
+  time-bounded proof that must remain distinguishable from durable current documentation;
+- Repository Standards declaration schema v8 and compatibility profile v7 as the explicit adoption
+  boundary for Development Workflow v7 and Repository Documentation v2 while preserving all v1-v7
+  pairings;
+- v2 migration guidance and non-normative Repository Documentation guidance covering document types,
+  Diátaxis, arc42-lite, C4, and MADR with primary-source references;
+- a version-specific Repository Documentation v2 consumer validator that reuses the established
+  objective documentation-impact contract without turning editorial quality into heuristics;
+- fail-closed required-check migration rules for Forgejo/Gitea event changes such as
+  `pull_request` to `pull_request_target`;
+- an explicit `pull_request_target` trust boundary prohibiting privileged execution of
+  pull-request-controlled code;
+- expanded deterministic Public Core coverage for Development Workflow v7, the v2 normative
+  documentation contract, v8 declarations, compatibility, migration, explanatory guidance,
+  validators, generated AI adapters, and regression tests; and
+- regression tests protecting Development Workflow v6 and Repository Documentation v1 byte-for-byte
+  and verifying v7 supersession semantics, v2 document semantics, v8 pairings, fail-closed
+  compatibility, navigation, and Public Core coverage.
+
+### Changed
+
+- declaration v8 now selects Development Workflow v7 rather than v6, while declaration v7 remains
+  pinned to Development Workflow v6;
+- a superseded pull request is represented by both the canonical leading successor block and
+  `Status/Superseded`; either representation without the other is invalid;
+- superseded pull requests are not merge candidates and SHOULD be closed once at least one successor
+  exists and the supersession relationship is recorded;
+- documentation quality under Repository Documentation v2 is evaluated by the information task a
+  document performs rather than by word count, line count, or another mechanical length proxy;
+- historical Verification / Evidence may be retained, but it must not be presented as permanently
+  current Reference, Architecture, or Operations documentation;
+- Diátaxis and arc42 are documented as complementary rather than competing models: Diátaxis organizes
+  reader information needs, arc42-lite structures architecture content, C4 supplies useful views,
+  and MADR records significant decisions;
+- required quality gates are now identified logically first and mapped to provider-specific concrete
+  check/status identities by an adapter;
+- Forgejo/Gitea status identity includes the triggering event in
+  `<workflow> / <job> (<event>)`, so event changes require coordinated workflow and branch-protection
+  migration;
+- GitHub Required Status Check mappings remain job-based and MUST NOT invent a Forgejo/Gitea event
+  suffix; and
+- bounded provider-supported pattern matching may be used only when it cannot allow unrelated checks
+  to satisfy the intended logical gate.
+
+### Compatibility
+
+- every previously published standard, schema, compatibility profile, and reference declaration
+  remains supported and immutable for pinned consumers;
+- Development Workflow v6 remains paired with declaration v7 and receives no retroactive v7
+  supersession semantics;
+- Repository Documentation v1 remains paired with declaration v1-v7 consumers and receives no
+  retroactive v2 semantics;
+- declaration v8 is paired with Development Workflow v7 and Repository Documentation v2 through
+  compatibility profile v7; declaration v8 + Workflow v6, declaration v7 + Workflow v7,
+  declaration v7 + Documentation v2, and declaration v8 + Documentation v1 are unsupported and fail
+  closed;
+- `Status/Superseded` is pull-request metadata and MUST NOT be interpreted as a Ticket Specification
+  issue lifecycle status;
+- v8 publication does not migrate any consumer repository automatically or require an existing
+  `docs/` tree to be reorganized merely to match an illustrative layout;
+- the current Maintenance `main` revision `efe19a3f2a1bc6bb8cd2ff95496ac4454e4e960c` supports the
+  protected Public Core publication path, while its consumer release manifest does not yet advertise
+  v8; consumer migration to declaration v6/v7/v8 therefore remains blocked until a compatible
+  Maintenance revision explicitly registers v8;
+- Jenkins remains an implementation and is not required to interpret, adopt, or locally validate the
+  portable Repository Standards contracts; and
+- the Public Core release-tag publisher is available from the Maintenance #549 publication contract;
+  external publication remains dry-run-first and release tags remain immutable.
+
+## 7.0.0 - 2026-08-24
+
+### Added
+
+- Ticket Specification v3 with canonical Story Point anchors for `1`, `2`, `3`, `5`, `8`, and `13`;
+- holistic estimation across effort, complexity, risk, and uncertainty;
+- explicit prohibition of converting Story Points mechanically to hours, person-days, calendar
+  duration, staffing, file counts, task counts, lines of code, or another single proxy;
+- exceptional `Estimate/13` semantics requiring documented justification and explicit split
+  consideration;
+- machine-readable Ticket Specification v3 profile/schema and generated AI authoring guidance;
+- Development Workflow v5 and Repository Standards declaration schema v5 as the compatible explicit
+  adoption boundary.
+
+### Compatibility
+
+- Ticket Specification v1/v2, Development Workflow v1-v4, declaration schemas v1-v4, and prior
+  compatibility profiles remain immutable and supported for pinned consumers;
+- adoption of Ticket Specification v3 is explicit through declaration v5 and Development Workflow v5;
+- existing tickets are not re-estimated automatically and unsupported mixed pairings fail closed.
+
 ## 6.0.0 - 2026-08-21
 
 ### Added
