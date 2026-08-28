@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://git.home.siczb.de/siczb/repository-standards/schemas/development-workflow-v8.schema.json",
+  "title": "Development Workflow v8 machine-readable profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "standard",
+    "version",
+    "normative_source",
+    "schema",
+    "incorporates",
+    "requires",
+    "branch_naming",
+    "pull_request_naming",
+    "pull_request_supersession",
+    "pre_write_validation",
+    "exemptions",
+    "post_write_validation",
+    "required_checks",
+    "contract_first",
+    "branching",
+    "generated_assets"
+  ],
+  "properties": {
+    "standard": {"const": "development-workflow"},
+    "version": {"const": "8.0.0"},
+    "normative_source": {"const": "standards/development-workflow/v8/standard.md"},
+    "schema": {"const": "schemas/development-workflow-v8.schema.json"},
+    "incorporates": {"const": "profiles/development-workflow-v7.json"},
+    "requires": {
+      "const": {
+        "declaration_schema": "v9",
+        "ticket_specification": "v4",
+        "repository_documentation": "v2",
+        "contract_first_delivery": "v1"
+      }
+    },
+    "branch_naming": {
+      "type": "object",
+      "required": ["prefix_source"],
+      "properties": {
+        "prefix_source": {"const": "profiles/ticket-specification-v4.json#/branch_prefixes"}
+      },
+      "unevaluatedProperties": true
+    },
+    "pull_request_naming": {"type": "object"},
+    "pull_request_supersession": {"type": "object"},
+    "pre_write_validation": {
+      "type": "object",
+      "required": ["contract_first_ticket_write", "fail_closed"],
+      "properties": {
+        "contract_first_ticket_write": {"const": true},
+        "fail_closed": {"const": true}
+      },
+      "unevaluatedProperties": true
+    },
+    "exemptions": {"type": "object"},
+    "post_write_validation": {"type": "object"},
+    "required_checks": {
+      "type": "object",
+      "required": ["identity_model", "fail_closed"],
+      "properties": {
+        "identity_model": {"const": "logical-gate-with-provider-adapter"},
+        "fail_closed": {"const": true}
+      },
+      "unevaluatedProperties": true
+    },
+    "contract_first": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model",
+        "not_applicable_inherits_v7_workflow",
+        "unresolved_work_item_reference_allowed_before_ready",
+        "resolved_artifact_revision_required_at_ready",
+        "test_contract_qualification",
+        "freeze",
+        "in_progress",
+        "invalidation",
+        "pull_request",
+        "done",
+        "logical_gates"
+      ],
+      "properties": {
+        "model": {"const": "contract-first-v1"},
+        "not_applicable_inherits_v7_workflow": {"const": true},
+        "unresolved_work_item_reference_allowed_before_ready": {"const": true},
+        "resolved_artifact_revision_required_at_ready": {"const": true},
+        "test_contract_qualification": {
+          "const": {
+            "product_conformance_required": false,
+            "controlled_negative_case_required": true,
+            "masking_prohibited": true,
+            "fail_closed": true
+          }
+        },
+        "freeze": {
+          "const": {
+            "status": "Status/Ready",
+            "design_contract_work_items_done_required": true,
+            "test_contract_work_items_done_required": true,
+            "exact_contract_revisions_required": true,
+            "test_contract_qualification_required": true
+          }
+        },
+        "in_progress": {
+          "const": {
+            "frozen_contract_set_must_be_current": true,
+            "fail_closed": true
+          }
+        },
+        "invalidation": {
+          "const": {
+            "design_change_invalidates_test_implementation_evidence": true,
+            "test_change_invalidates_implementation_evidence": true,
+            "implementation_change_invalidates_evidence": true,
+            "forward_transition_blocked_when_stale": true,
+            "merge_blocked_when_stale": true,
+            "historical_evidence_preserved": true,
+            "blocked_status_recommended": true
+          }
+        },
+        "pull_request": {
+          "const": {
+            "frozen_contract_set_required_for_implementation": true,
+            "same_evidence_step_may_mutate_contract": false,
+            "ordering_must_be_independently_verifiable": true
+          }
+        },
+        "done": {
+          "const": {
+            "conformance_evidence_required_for_required_implementation": true,
+            "evidence_schema": "schemas/contract-first-evidence-v1.schema.json",
+            "exact_implementation_revision_required": true,
+            "exact_deployed_artifact_required_when_runtime_applicable": true
+          }
+        },
+        "logical_gates": {
+          "const": ["contract-graph", "test-contract-qualification", "contract-conformance"]
+        }
+      }
+    },
+    "branching": {
+      "const": {
+        "models": ["single", "integration"],
+        "multibranch_filter": "^(main|develop|PR-[0-9]+)$"
+      }
+    },
+    "generated_assets": {
+      "const": {"ai_adapter": "reference/ai/development-workflow-v8.md"}
+    }
+  }
+}

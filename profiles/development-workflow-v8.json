@@ -1,0 +1,169 @@
+{
+  "standard": "development-workflow",
+  "version": "8.0.0",
+  "normative_source": "standards/development-workflow/v8/standard.md",
+  "schema": "schemas/development-workflow-v8.schema.json",
+  "incorporates": "profiles/development-workflow-v7.json",
+  "requires": {
+    "declaration_schema": "v9",
+    "ticket_specification": "v4",
+    "repository_documentation": "v2",
+    "contract_first_delivery": "v1"
+  },
+  "branch_naming": {
+    "prefix_source": "profiles/ticket-specification-v4.json#/branch_prefixes",
+    "forms": [
+      "<prefix>/<ticket-number>-<ticket-title-slug>",
+      "<prefix>/<repository>-<ticket-number>-<ticket-title-slug>"
+    ],
+    "slug_pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+    "repository_qualified_ticket_repository_must_match": true,
+    "regular_prefix_must_match_ticket_kind": true,
+    "undeclared_prefixes_allowed": false,
+    "hotfix": {
+      "prefix_key": "hotfix",
+      "explicit_path_required": true,
+      "source_branch": "main",
+      "target_branch": "main"
+    }
+  },
+  "pull_request_naming": {
+    "ticket_linked_title_form": "#<ticket-number> <summary>",
+    "summary_required": true,
+    "branch_ticket_number_must_match_title": true,
+    "target_must_match_branching_model": true
+  },
+  "pull_request_supersession": {
+    "heading": "# Superseded by / See other",
+    "position": "first-content",
+    "successor_list": {
+      "style": "unordered",
+      "minimum_items": 1,
+      "one_pull_request_reference_per_item": true,
+      "prose_allowed": false
+    },
+    "required_label": "Status/Superseded",
+    "label_and_body_marker_must_match": true,
+    "merge_allowed": false,
+    "close_after_successor_exists": "should",
+    "retain_marker_after_close": true,
+    "validate_successor_exists": "should",
+    "self_reference_allowed": false,
+    "infer_from_similarity_or_closed_state": false
+  },
+  "pre_write_validation": {
+    "resolve_pinned_declaration": true,
+    "validate_complete_pairing": true,
+    "load_released_profiles": true,
+    "branch_creation": true,
+    "ticket_linked_pull_request_creation": true,
+    "pull_request_supersession_write": true,
+    "contract_first_ticket_write": true,
+    "fail_closed": true
+  },
+  "exemptions": {
+    "automated_dependency_pull_requests_without_ticket": {
+      "may_be_exempt": true,
+      "must_be_explicitly_identified": true
+    },
+    "legacy_creation_time_cutoff": {"allowed": false}
+  },
+  "post_write_validation": {
+    "recommended": true,
+    "defense_in_depth": true,
+    "must_match_pre_write_semantics": true
+  },
+  "required_checks": {
+    "identity_model": "logical-gate-with-provider-adapter",
+    "mapping_must_be_deterministic": true,
+    "configured_context_must_be_producible": true,
+    "fail_closed": true,
+    "providers": {
+      "forgejo_gitea": {
+        "context_format": "<workflow> / <job> (<event>)",
+        "event_part_of_identity": true,
+        "event_change_requires_identity_migration": true,
+        "workflow_and_branch_protection_migrate_together": true,
+        "bounded_pattern_matching_allowed": true
+      },
+      "github": {
+        "normal_context_format": "<job>",
+        "reusable_context_format": "<job> / <reusable-job>",
+        "event_part_of_identity": false,
+        "workflow_name_part_of_identity": false,
+        "matrix_part_of_identity": false
+      }
+    },
+    "events": {
+      "pull_request": {"pr_content_validation_supported": true},
+      "pull_request_target": {
+        "base_branch_context": true,
+        "privileged_context": true,
+        "untrusted_pr_code_execution_allowed": false,
+        "recommended_uses": ["policy", "metadata", "repository-governance"]
+      }
+    },
+    "migration": {
+      "verify_new_identity_is_produced": true,
+      "update_workflow_and_protection_consistently": true,
+      "reject_stale_unproducible_required_context": true,
+      "must_not_weaken_logical_gate": true,
+      "rollback_evidence_required_until_qualified": true
+    }
+  },
+  "contract_first": {
+    "model": "contract-first-v1",
+    "not_applicable_inherits_v7_workflow": true,
+    "unresolved_work_item_reference_allowed_before_ready": true,
+    "resolved_artifact_revision_required_at_ready": true,
+    "test_contract_qualification": {
+      "product_conformance_required": false,
+      "controlled_negative_case_required": true,
+      "masking_prohibited": true,
+      "fail_closed": true
+    },
+    "freeze": {
+      "status": "Status/Ready",
+      "design_contract_work_items_done_required": true,
+      "test_contract_work_items_done_required": true,
+      "exact_contract_revisions_required": true,
+      "test_contract_qualification_required": true
+    },
+    "in_progress": {
+      "frozen_contract_set_must_be_current": true,
+      "fail_closed": true
+    },
+    "invalidation": {
+      "design_change_invalidates_test_implementation_evidence": true,
+      "test_change_invalidates_implementation_evidence": true,
+      "implementation_change_invalidates_evidence": true,
+      "forward_transition_blocked_when_stale": true,
+      "merge_blocked_when_stale": true,
+      "historical_evidence_preserved": true,
+      "blocked_status_recommended": true
+    },
+    "pull_request": {
+      "frozen_contract_set_required_for_implementation": true,
+      "same_evidence_step_may_mutate_contract": false,
+      "ordering_must_be_independently_verifiable": true
+    },
+    "done": {
+      "conformance_evidence_required_for_required_implementation": true,
+      "evidence_schema": "schemas/contract-first-evidence-v1.schema.json",
+      "exact_implementation_revision_required": true,
+      "exact_deployed_artifact_required_when_runtime_applicable": true
+    },
+    "logical_gates": [
+      "contract-graph",
+      "test-contract-qualification",
+      "contract-conformance"
+    ]
+  },
+  "branching": {
+    "models": ["single", "integration"],
+    "multibranch_filter": "^(main|develop|PR-[0-9]+)$"
+  },
+  "generated_assets": {
+    "ai_adapter": "reference/ai/development-workflow-v8.md"
+  }
+}

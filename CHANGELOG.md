@@ -2,6 +2,51 @@
 
 All notable changes to the repository standards are recorded here.
 
+## 9.0.0 - 2026-08-28
+
+### Added
+
+- Contract-first Delivery v1 with revision-bound Design Contract, Test Contract, Implementation and
+  Conformance Evidence roles and an explicit Contract Set freeze at `Status/Ready`;
+- Ticket Specification v4 with mandatory machine-readable `delivery` metadata and fail-closed
+  Contract-first applicability semantics;
+- Development Workflow v8 with Design → Test → Implementation → Evidence ordering, downstream
+  invalidation/requalification rules, and logical conformance gates;
+- Web Application Baseline v2 with distinct functional, accessibility, reflow/responsive,
+  live-runtime and visual conformance evidence classes;
+- Contract-first Evidence schema v1 binding evidence to exact contract and
+  implementation/deployed-artifact revisions while prohibiting contract mutation during evidence
+  collection;
+- Repository Standards declaration schema v9, compatibility profile v8, canonical v9 Core/Web
+  reference declarations, migration guidance, generated AI adapters, validators, regression tests,
+  and Public Core coverage.
+
+### Changed
+
+- required implementation work freezes resolved Design and Test Contract identities before entering
+  `Status/Ready`; unresolved future revisions or digests may not be invented;
+- a changed Design Contract invalidates dependent Test Contract qualification, implementation
+  qualification, and evidence; a changed Test Contract invalidates implementation qualification and
+  evidence; an implementation revision change invalidates prior evidence;
+- failed Conformance Evidence must be repaired by changing the implementation or by explicit
+  upstream contract evolution followed by downstream requalification, never by weakening
+  assertions, baselines, or tolerances inside the evidence step;
+- web UI design-source provenance remains normative while baseline screenshots are treated as
+  derived test artifacts rather than an independent design authority;
+- DEV is not required for Design/Test Contract authoring; runtime-bound evidence requires an actual
+  deployed runtime and should have a reliably deployable DEV path before implementation begins.
+
+### Compatibility
+
+- Repository Standards v8.0.0 and all earlier released standard, schema, profile, reference, and
+  migration assets remain immutable and supported for pinned consumers;
+- v9 is an explicit opt-in contract set; publication does not migrate any consumer automatically;
+- v9 consumer activation remains fail-closed until compatible downstream ticket, lifecycle, and CI
+  automation is qualified and explicitly advertises the released v9 contract set;
+- unsupported mixed v8/v9 pairings are rejected rather than guessed or silently coerced;
+- Jenkins and Maintenance remain implementation layers and are not required to interpret the
+  portable normative contracts themselves.
+
 ## 8.0.0 - 2026-08-25
 
 ### Added

@@ -1,0 +1,92 @@
+{
+  "standard": "web-application-baseline",
+  "version": "2.0.0",
+  "normative_source": "standards/web-application-baseline/v2/standard.md",
+  "incorporates": "profiles/web-application-baseline-v1.json",
+  "requires": {
+    "contract_first_delivery": "v1",
+    "ticket_specification": "v4",
+    "development_workflow": "v8"
+  },
+  "scope": "explicitly-adopted-user-facing-web",
+  "ui_impact": {
+    "contract_first_applicability": "required",
+    "covered_impacts": [
+      "user-visible-presentation",
+      "navigation",
+      "responsive-behavior",
+      "interactive-state",
+      "ui-state-copy",
+      "other-user-visible-frontend-behavior"
+    ],
+    "not_applicable_requires_rationale": true
+  },
+  "design_contract": {
+    "provider_neutral": true,
+    "penpot_supported": true,
+    "penpot_required": false,
+    "required_dimensions_as_applicable": [
+      "provider-source",
+      "project-file-page-frame-or-equivalent",
+      "screen-or-component",
+      "state",
+      "viewport-breakpoint-responsive-variant",
+      "design-normative-copy",
+      "interaction-navigation",
+      "design-system-decision",
+      "accessibility-relevant-intent"
+    ],
+    "derived_screenshot_is_normative_design_source": false
+  },
+  "test_contract": {
+    "must_precede_ready": true,
+    "product_must_be_green_before_ready": false,
+    "controlled_negative_case_required": true,
+    "implicit_baseline_update_allowed": false,
+    "required_dimensions_as_applicable": [
+      "route-navigation",
+      "fixture-data-runtime-state",
+      "viewport-responsive-condition",
+      "browser-runtime",
+      "font-render-inputs",
+      "consumer-owned-selectors-or-semantic-anchors",
+      "assertions",
+      "design-contract-provenance",
+      "visual-baseline-and-tolerance",
+      "expected-failure-behavior"
+    ]
+  },
+  "conformance_classes": {
+    "classification_required": true,
+    "values": ["required", "not-applicable"],
+    "not_applicable_requires_rationale": true,
+    "classes": {
+      "functional": {"default_for_interactive_ui": "required"},
+      "accessibility": {"default_for_interactive_ui": "required", "visual_may_substitute": false},
+      "reflow-responsive": {"default_for_responsive_web": "required", "single_viewport_visual_may_substitute": false},
+      "live-runtime": {"default_when_canonical_dev_exists": "required", "must_match_deployed_immutable_revision": true},
+      "visual": {"default_when_normative_visual_source_exists": "required", "bounded_tolerance_required": true, "expected_actual_diff_recommended": true}
+    }
+  },
+  "evidence": {
+    "exact_design_contract_revisions": true,
+    "exact_test_contract_revisions": true,
+    "exact_implementation_revision": true,
+    "build_artifact_identity_when_available": true,
+    "runtime_and_deployed_revision_for_live_runtime": true,
+    "browser_version_when_material": true,
+    "viewport_render_parameters_when_material": true,
+    "execution_time_and_result": true,
+    "reports_traces_screenshots_diffs_as_applicable": true,
+    "contract_mutation_during_evidence_allowed": false
+  },
+  "responsibility": {
+    "consumer": ["navigation", "fixtures", "selectors", "copy", "state-setup", "assertions"],
+    "shared_automation_may_own": ["browser-provisioning", "deterministic-rendering", "design-source-provenance", "image-diff", "report-artifact-handling", "immutable-revision-verification", "ci-orchestration"]
+  },
+  "accessibility": {
+    "legal_compliance_claim": false,
+    "visual_conformance_substitutes_for_wcag_validation": false
+  },
+  "consumer_activation": "fail-closed-until-selected-conformance-capabilities-qualified"
+}

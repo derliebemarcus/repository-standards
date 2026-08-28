@@ -1,0 +1,138 @@
+{
+  "standard": "contract-first-delivery",
+  "version": "1.0.0",
+  "normative_source": "standards/contract-first-delivery/v1/standard.md",
+  "evidence_schema": "schemas/contract-first-evidence-v1.schema.json",
+  "model": "contract-first-v1",
+  "roles": [
+    "design-contract",
+    "test-contract",
+    "implementation",
+    "conformance-evidence"
+  ],
+  "sequence": [
+    "design-contract",
+    "test-contract",
+    "implementation",
+    "conformance-evidence"
+  ],
+  "separate_ticket_per_work_product_required": false,
+  "applicability": {
+    "values": ["required", "not-applicable"],
+    "not_applicable_requires_rationale": true,
+    "externally_observable_behavior_default": "required",
+    "default_required_impacts": [
+      "user-interface",
+      "public-api",
+      "persistent-data-model",
+      "integration-interface",
+      "deployment-promotion"
+    ],
+    "domain_standard_may_strengthen": true
+  },
+  "contract_reference": {
+    "unresolved_work_item_reference_allowed_before_ready": true,
+    "unresolved_reference_requires_work_item": true,
+    "resolved_work_item_optional": true,
+    "resolved_artifact_type_required": true,
+    "resolved_artifact_locator_required": true,
+    "resolved_revision_or_digest_required": true,
+    "all_required_references_resolved_at_ready": true,
+    "evidence_requires_resolved_references": true,
+    "mutable_ticket_text_sufficient_as_immutable_identity": false
+  },
+  "work_products": {
+    "design-contract": {
+      "normative_source_required": true,
+      "independently_reviewable_from_implementation": true,
+      "derived_rendering_may_replace_normative_source": false
+    },
+    "test-contract": {
+      "must_precede_implementation": true,
+      "qualification_required": true,
+      "product_conformance_required_before_implementation": false,
+      "required_qualification_properties": [
+        "assertions-and-pass-fail-semantics",
+        "fixtures-data-runtime-states",
+        "deterministic-execution-parameters",
+        "design-contract-provenance",
+        "executable-or-reproducible-harness",
+        "controlled-negative-case",
+        "fail-closed-missing-inputs"
+      ],
+      "controlled_negative_case_required": true,
+      "masking_prohibited": [
+        "skip",
+        "xfail",
+        "implicit-baseline-acceptance",
+        "unbounded-tolerance",
+        "materially-over-broad-tolerance"
+      ]
+    },
+    "implementation": {
+      "qualified_contract_set_required": true,
+      "exact_design_contract_references_required_at_ready": true,
+      "exact_test_contract_references_required_at_ready": true,
+      "may_redefine_expected_outcome_to_match_code": false
+    },
+    "conformance-evidence": {
+      "fixed_contract_revisions_required": true,
+      "exact_implementation_revision_required": true,
+      "deployed_artifact_identity_required_when_runtime_applicable": true,
+      "contract_mutation_during_evidence_allowed": false,
+      "baseline_or_tolerance_adjustment_during_evidence_allowed": false
+    }
+  },
+  "freeze": {
+    "implementation_status": "Status/Ready",
+    "exact_design_and_test_revisions_required": true,
+    "in_progress_requires_non_stale_frozen_set": true
+  },
+  "invalidation": {
+    "design_contract_change_invalidates": [
+      "test-contract-qualification",
+      "implementation-qualification",
+      "conformance-evidence"
+    ],
+    "test_contract_change_invalidates": [
+      "implementation-qualification",
+      "conformance-evidence"
+    ],
+    "implementation_change_invalidates": ["conformance-evidence"],
+    "fail_closed": true,
+    "blocked_status_recommended": true,
+    "historical_evidence_overwrite_allowed": false
+  },
+  "evidence": {
+    "verification_evidence_class_recommended": true,
+    "required_provenance": [
+      "consumer",
+      "design-contract-revisions",
+      "test-contract-revisions",
+      "implementation-revision",
+      "execution-time",
+      "execution-method",
+      "result"
+    ],
+    "conditional_provenance": [
+      "ticket",
+      "pull-request",
+      "build-or-artifact-identity",
+      "runtime-environment",
+      "deployed-revision",
+      "deterministic-execution-parameters",
+      "result-artifacts",
+      "limitations"
+    ]
+  },
+  "enforcement_boundaries": [
+    "ticket-authoring",
+    "contract-graph-validation",
+    "ready-transition",
+    "in-progress-transition",
+    "branch-pull-request-validation",
+    "definition-of-done-evidence-validation"
+  ],
+  "provider_neutral": true,
+  "consumer_activation": "fail-closed-until-enforcement-compatible"
+}
