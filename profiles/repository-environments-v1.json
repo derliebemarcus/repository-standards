@@ -1,0 +1,44 @@
+{
+  "standard": "repository-environments",
+  "version": "1.0.0",
+  "normative_source": "standards/repository-environments/v1/standard.md",
+  "schema": "schemas/repository-environments-v1.schema.json",
+  "declaration_path": ".repository-environments.yml",
+  "environment_vocabulary": {
+    "standard": "deployment-environments",
+    "version": "v2",
+    "canonical_order": ["DEV", "STAGING", "PROD"]
+  },
+  "absence_semantics": {
+    "missing_declaration": "no-declared-human-web-environments",
+    "missing_environment": "environment-not-declared",
+    "invalid_present_environment": "validation-error"
+  },
+  "url": {
+    "schemes": ["http", "https"],
+    "absolute": true,
+    "host_required": true,
+    "userinfo_forbidden": true,
+    "fragment_forbidden": true,
+    "credentials_forbidden": true
+  },
+  "ownership": {
+    "repository_owned": true,
+    "version_controlled": true,
+    "central_project_url_table_forbidden": true,
+    "hostname_derivation_forbidden": true
+  },
+  "compatibility": {
+    "additive_sidecar": true,
+    "changes_repository_standards_pin": false,
+    "changes_deployment_automation": false,
+    "consumer_migration": "explicit"
+  },
+  "validation": {
+    "fail_closed": true,
+    "unsupported_version": "reject",
+    "unknown_root_key": "reject",
+    "unknown_environment_key": "reject",
+    "unknown_environment_field": "reject"
+  }
+}

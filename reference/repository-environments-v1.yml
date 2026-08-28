@@ -1,0 +1,9 @@
+version: 1
+deployment-environments: v2
+environments:
+  DEV:
+    url: "https://dev.example.invalid/"
+  STAGING:
+    url: "https://staging.example.invalid/"
+  PROD:
+    url: "https://example.invalid/"

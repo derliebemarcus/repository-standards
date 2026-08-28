@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://git.home.siczb.de/siczb/repository-standards/schemas/repository-environments-v1.schema.json",
+  "title": "Repository Environments declaration v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "deployment-environments", "environments"],
+  "properties": {
+    "version": {"const": 1},
+    "deployment-environments": {"const": "v2"},
+    "environments": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": false,
+      "properties": {
+        "DEV": {"$ref": "#/$defs/environment"},
+        "STAGING": {"$ref": "#/$defs/environment"},
+        "PROD": {"$ref": "#/$defs/environment"}
+      }
+    }
+  },
+  "$defs": {
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url"],
+      "properties": {
+        "url": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^https?://",
+          "format": "uri"
+        }
+      }
+    }
+  }
+}

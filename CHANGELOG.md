@@ -2,6 +2,27 @@
 
 All notable changes to the repository standards are recorded here.
 
+## 9.1.0 - 2026-08-29
+
+### Added
+
+- Deployment Environments v2 with canonical `DEV`, optional `STAGING`, and `PROD`, while rejecting `STAGE` in the v2 machine-readable contract;
+- Repository Environments v1 as the independently versioned repository-owned `.repository-environments.yml` sidecar for explicit human-web environment URLs;
+- machine-readable profiles, schema, reference declaration, compatibility metadata, migration and AI guidance, validator tooling, regression tests, and Public Core distribution assets for the new contracts.
+
+### Changed
+
+- environment URLs are explicit repository-owned metadata and are never inferred from repository names, hostname conventions, or a centrally maintained project-to-URL mapping;
+- declared environment URLs must be non-empty absolute HTTP(S) URLs; userinfo/credentials, fragments, unknown environment keys, missing URLs, and invalid URLs fail closed;
+- `STAG` may be used only as a presentation abbreviation and is not a machine-readable environment key.
+
+### Compatibility
+
+- Deployment Environments v1 remains immutable and supported for pinned consumers, including its canonical `STAGE` name;
+- Deployment Environments v2 and Repository Environments v1 are additive and opt-in; publication does not migrate `.repository-standards.yml`, deployment automation, or consumer repositories automatically;
+- Repository Standards v9.0.0 and all earlier release identities remain immutable;
+- downstream consumers may pin these new contracts only from a release that contains them.
+
 ## 9.0.0 - 2026-08-28
 
 ### Added

@@ -1,0 +1,30 @@
+{
+  "contract": "environment-contract-compatibility",
+  "version": "1.0.0",
+  "deployment_environment_versions": [
+    {
+      "version": "v1",
+      "canonical_environments": ["DEV", "STAGE", "PROD"],
+      "repository_environment_metadata": null,
+      "status": "supported-immutable"
+    },
+    {
+      "version": "v2",
+      "canonical_environments": ["DEV", "STAGING", "PROD"],
+      "repository_environment_metadata": "v1",
+      "status": "supported"
+    }
+  ],
+  "repository_environment_metadata": {
+    "version": "v1",
+    "declaration_path": ".repository-environments.yml",
+    "environment_vocabulary": "deployment-environments-v2",
+    "repository_declaration_schemas": ["v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9"],
+    "compatibility_mode": "additive-independent-sidecar",
+    "changes_repository_standards_pin": false,
+    "changes_deployment_automation": false,
+    "consumer_activation": "explicit"
+  },
+  "unsupported_metadata_version_policy": "reject",
+  "implicit_stage_to_staging_migration": false
+}
