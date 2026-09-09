@@ -2,6 +2,28 @@
 
 All notable changes to the repository standards are recorded here.
 
+## 9.2.0 - 2026-09-09
+
+### Added
+
+- Design Source Declaration v1 with the independently versioned `.repository-design-source.yml` sidecar for stable repository-owned design-source identity, Penpot team/project UUIDs, and optional automation metadata;
+- Web Application Baseline v3 with canonical `/<ISO-639-1>/<stable-route-id>` user-facing content routing;
+- Repository Localization v1 with repository-owned supported/default language metadata in `.repository-localization.yml` and fail-closed ISO-639-1 validation;
+- Repository Standards declaration schema v10, compatibility profile v9, Core/Web single/integration references, validators, migration/AI guidance, tests, and Public Core assets required for explicit WAB v3 adoption.
+
+### Changed
+
+- WAB v3 keeps `impressum`, `datenschutz`, and `barrierefreiheit` as stable route IDs across languages; localized aliases are non-canonical;
+- `/` under WAB v3 redirects to a supported language with deterministic fallback to the declared default language;
+- unsupported language namespaces fail closed, while technical APIs, health endpoints, callbacks, and static assets are not blanket-prefixed by the user-facing content routing rule;
+- publicly indexable language variants use language-specific canonical URLs and consistent `hreflang` relationships.
+
+### Compatibility
+
+- Repository Standards v9.1.0, Web Application Baseline v1/v2, declaration schemas v1-v9, and all existing consumer pins remain immutable and supported;
+- Design Source Declaration v1 and WAB v3 / Declaration v10 are additive and opt-in; publication does not migrate any consumer automatically;
+- Capability Promotion v1 from #47 / PR #51 is not part of v9.2.0 and remains blocked on real cross-consumer qualification in `siczb/maintenance#616`.
+
 ## 9.1.0 - 2026-08-29
 
 ### Added

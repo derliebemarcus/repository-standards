@@ -1,0 +1,83 @@
+{
+  "standard": "web-application-baseline",
+  "version": "3.0.0",
+  "normative_source": "standards/web-application-baseline/v3/standard.md",
+  "incorporates": "profiles/web-application-baseline-v2.json",
+  "requires": {
+    "contract_first_delivery": "v1",
+    "ticket_specification": "v4",
+    "development_workflow": "v8",
+    "repository_localization": "v1"
+  },
+  "routing": {
+    "canonical_user_facing_content_form": "/<iso-639-1>/<stable-route-id>",
+    "language_code": {
+      "registry": "ISO-639-1",
+      "lowercase": true,
+      "regional_url_tags_allowed": false,
+      "must_be_declared_supported": true
+    },
+    "required_route_ids": [
+      "impressum",
+      "datenschutz",
+      "barrierefreiheit"
+    ],
+    "route_ids_stable_across_languages": true,
+    "localized_canonical_slugs": false,
+    "localized_aliases": {
+      "allowed": true,
+      "canonical": false,
+      "same_language_canonical_destination_required": true
+    },
+    "technical_endpoints_language_prefix_required": false,
+    "legacy_unprefixed_content_routes": {
+      "canonical": false,
+      "redirect_allowed": true
+    }
+  },
+  "localization": {
+    "declaration": ".repository-localization.yml",
+    "contract": "repository-localization-v1",
+    "supported_languages_repository_owned": true,
+    "default_language_required": true,
+    "default_must_be_supported": true,
+    "infer_languages_from_routes": false,
+    "unsupported_namespace_fallback_in_place": false
+  },
+  "root": {
+    "canonical_content": false,
+    "redirect_required": true,
+    "target_must_be_supported_language_root": true,
+    "request_language_negotiation_allowed": true,
+    "deterministic_default_fallback_required": true
+  },
+  "navigation": {
+    "preserve_current_language": true,
+    "language_switch_preserves_stable_route_when_available": true,
+    "required_route_ids_have_cross_language_equivalent": true
+  },
+  "accessibility": {
+    "html_lang_matches_delivered_language": true,
+    "bcp47_runtime_tag_allowed": true,
+    "foreign_passages_require_language_semantics_as_applicable": true,
+    "language_switch_must_pass_normal_accessibility_gates": true,
+    "url_language_is_not_accessibility_evidence": true
+  },
+  "indexing": {
+    "canonical_per_language": true,
+    "hreflang_for_equivalent_indexable_pages": true,
+    "x_default_allowed": true,
+    "aliases_must_not_compete_as_canonical": true
+  },
+  "contract_first": {
+    "language_state_required_when_material": true,
+    "test_supported_languages": true,
+    "test_default_fallback": true,
+    "test_unsupported_namespace_fail_closed": true,
+    "test_required_routes_all_supported_languages": true,
+    "test_language_switch_semantic_route": true,
+    "test_document_language_and_indexing_metadata": true,
+    "test_technical_endpoint_non_rewrite": true
+  },
+  "consumer_activation": "explicit-declaration-plus-valid-repository-localization"
+}

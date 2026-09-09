@@ -1,0 +1,54 @@
+{
+  "standard": "design-source-declaration",
+  "version": "1.0.0",
+  "normative_source": "standards/design-source-declaration/v1/standard.md",
+  "schema": "schemas/design-source-declaration-v1.schema.json",
+  "canonical_path": ".repository-design-source.yml",
+  "primary_source": {
+    "singular": true,
+    "required_fields": ["provider", "team", "project"],
+    "supported_providers": ["penpot"]
+  },
+  "providers": {
+    "penpot": {
+      "team_id": "uuid",
+      "project_id": "uuid",
+      "names_are_normative": false
+    }
+  },
+  "automation": {
+    "optional": true,
+    "supported_interfaces": ["penpot-rpc"],
+    "penpot-rpc": {
+      "provider": "penpot",
+      "normative_source": false,
+      "required_for_source_validity": false
+    }
+  },
+  "design_contract_refinement": {
+    "repository_scope": ["provider", "team.id", "project.id"],
+    "contract_scope": [
+      "file-or-equivalent",
+      "page-or-equivalent",
+      "frame-component-or-equivalent",
+      "state",
+      "responsive-variant",
+      "design-revision"
+    ],
+    "provider_must_match": true,
+    "project_must_match": true,
+    "mismatch_behavior": "fail-closed"
+  },
+  "security": {
+    "credentials_allowed": false,
+    "tokens_allowed": false,
+    "session_material_allowed": false
+  },
+  "compatibility": {
+    "repository_standards_pin_independent": true,
+    "web_application_baseline_v2_immutable": true,
+    "missing_sidecar_is_valid": true,
+    "invalid_sidecar_is_fail_closed": true,
+    "target_release": "9.2.0"
+  }
+}

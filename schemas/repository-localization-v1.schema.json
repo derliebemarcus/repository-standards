@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://git.home.siczb.de/siczb/repository-standards/schemas/repository-localization-v1.schema.json",
+  "title": "Repository Localization declaration v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "web-application-baseline",
+    "default-language",
+    "supported-languages"
+  ],
+  "properties": {
+    "version": {"const": 1},
+    "web-application-baseline": {"const": "v3"},
+    "default-language": {"$ref": "#/$defs/language"},
+    "supported-languages": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/language"}
+    }
+  },
+  "$defs": {
+    "language": {
+      "type": "string",
+      "pattern": "^[a-z]{2}$",
+      "description": "Lowercase ISO 639-1 alpha-2 code; registry membership is semantic validation."
+    }
+  }
+}

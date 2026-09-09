@@ -1,0 +1,6 @@
+version: 1
+web-application-baseline: v3
+default-language: de
+supported-languages:
+  - de
+  - en

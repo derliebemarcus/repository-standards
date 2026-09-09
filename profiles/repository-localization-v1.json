@@ -1,0 +1,52 @@
+{
+  "standard": "repository-localization",
+  "version": "1.0.0",
+  "normative_source": "standards/repository-localization/v1/standard.md",
+  "schema": "schemas/repository-localization-v1.schema.json",
+  "canonical_path": ".repository-localization.yml",
+  "requires": {
+    "web_application_baseline": "v3"
+  },
+  "root_keys": [
+    "version",
+    "web-application-baseline",
+    "default-language",
+    "supported-languages"
+  ],
+  "language_identity": {
+    "registry": "ISO-639-1",
+    "form": "alpha-2-lowercase",
+    "pattern": "^[a-z]{2}$",
+    "registry_membership_required": true,
+    "regional_url_tags_allowed": false,
+    "bcp47_runtime_metadata_allowed": true
+  },
+  "supported_languages": {
+    "minimum": 1,
+    "unique": true,
+    "repository_owned": true,
+    "inference_allowed": false
+  },
+  "default_language": {
+    "required": true,
+    "must_be_supported": true,
+    "cardinality_in_supported_languages": 1,
+    "deterministic_fallback": true
+  },
+  "forbidden_content": [
+    "credentials",
+    "tokens",
+    "user-preferences",
+    "geolocation-rules",
+    "personal-data",
+    "runtime-request-state"
+  ],
+  "validation": {
+    "unknown_fields": "reject",
+    "unknown_iso_639_1_code": "reject",
+    "undeclared_valid_iso_639_1_code": "unsupported-for-consumer",
+    "default_not_supported": "reject",
+    "duplicates": "reject",
+    "fail_closed": true
+  }
+}

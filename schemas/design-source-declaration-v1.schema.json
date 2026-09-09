@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://git.home.siczb.de/siczb/repository-standards/schemas/design-source-declaration-v1.schema.json",
+  "title": "Design Source Declaration v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "source"],
+  "properties": {
+    "version": {"const": 1},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "team", "project"],
+      "properties": {
+        "provider": {"const": "penpot"},
+        "team": {"$ref": "#/$defs/identity"},
+        "project": {"$ref": "#/$defs/identity"}
+      }
+    },
+    "automation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["interface"],
+      "properties": {
+        "interface": {"const": "penpot-rpc"}
+      }
+    }
+  },
+  "$defs": {
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^\\S(?:.*\\S)?$"
+        }
+      }
+    }
+  }
+}
