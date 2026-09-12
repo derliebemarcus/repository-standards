@@ -104,16 +104,17 @@ Before changing the declaration, consumers may non-disruptively:
 6. align Architecture and ADR navigation with arc42-lite, C4, and MADR roles.
 
 These preparatory improvements do not change the consumer's normative version. The binding migration
-occurs only when the repository explicitly adopts the v8 declaration pairing that selects Repository
-Documentation v2.
+occurs only when the repository explicitly adopts a supported Repository Standards declaration pairing
+that selects Repository Documentation v2. Declaration v8 was the original adoption boundary; later
+supported pairings may preserve the same Repository Documentation v2 selection.
 
 ## Breaking vs. non-breaking changes
 
 ### Breaking contract change
 
 Selecting Repository Documentation v2 is a breaking semantic migration because v2 adds obligations
-that v1 consumers did not previously have. That is why v1 is not modified and why declaration v8 is
-a separate compatibility boundary.
+that v1 consumers did not previously have. That is why v1 is not modified and why declaration v8 was
+introduced as a separate original compatibility boundary.
 
 ### Non-breaking preparation
 
@@ -121,20 +122,28 @@ Improving a v1 consumer's documentation in ways that are already compatible with
 navigation, better architecture detail, more complete runbooks, or explicit evidence provenance — is
 not itself a contract migration.
 
-## Required declaration and compatibility version
+## Required declaration and compatibility boundary
 
-A consumer that adopts Repository Documentation v2 must use a supported Repository Standards v8
-pairing. The canonical references are:
+A consumer that adopts Repository Documentation v2 must use a released Repository Standards pairing
+that selects Repository Documentation v2 and is `supported` by the compatibility matrix pinned for
+that consumer. The current additive compatibility reference is
+`profiles/repository-standards-compatibility-v10.json`; it preserves the earlier supported pairings
+and must be used instead of assuming that declaration v8 is the only valid adoption path.
+
+Declaration v8 was the original Repository Documentation v2 adoption boundary. Its canonical
+references remain immutable historical/released references:
 
 - `reference/repository-standards-v8.single.yml`;
 - `reference/repository-standards-v8.integration.yml`;
 - `reference/repository-standards-v8.web.single.yml`; and
 - `reference/repository-standards-v8.web.integration.yml`.
 
-The additive compatibility contract is
-`profiles/repository-standards-compatibility-v7.json`. Unsupported combinations fail closed. In
-particular, a consumer must not combine declaration v7 with Repository Documentation v2 or declaration
-v8 with Repository Documentation v1.
+The original additive compatibility profile was
+`profiles/repository-standards-compatibility-v7.json`. It remains immutable evidence of the initial
+v8 pairing. Unsupported combinations still fail closed; in particular, the original negative
+examples remain valid: declaration v7 must not be combined with Repository Documentation v2 and
+declaration v8 must not be combined with Repository Documentation v1. Later declaration generations
+must follow their own released compatibility pairings.
 
 The corresponding `.repository-documentation.yml` declaration selects `standard_version: 2` and a
 `2.x` ruleset such as `2.0.0`.
@@ -146,8 +155,9 @@ required to interpret, adopt, or validate Repository Documentation v2 locally or
 system.
 
 Where a consumer depends on `siczb/maintenance` for blocking enforcement or migration writes, it
-must not activate the v8 contract until a compatible Maintenance release advertises and validates
-that pairing. This operational compatibility requirement does not make Jenkins normative.
+must not activate its selected Repository Standards pairing until a compatible Maintenance release
+advertises and validates that pairing. This operational compatibility requirement does not make
+Jenkins normative.
 
 ## Rollback
 

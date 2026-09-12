@@ -26,10 +26,11 @@ wins.
 
 - [Repository Documentation v2 migration](../repository-documentation-v2-migration.md) describes the
   v1-to-v2 boundary and how existing documentation and historical evidence are handled.
-- [Repository contract v8 migration](../repository-contract-v8-migration.md) describes the repository
-  declaration and compatibility pairing required to select Repository Documentation v2.
+- [Repository contract v8 migration](../repository-contract-v8-migration.md) records the original
+  declaration boundary that first introduced Repository Documentation v2.
 - [Compatibility and versioning](../reference/compatibility.md) is the current compatibility
-  reference for all released declaration pairings.
+  reference for all released declaration pairings and the source of truth for supported adoption
+  pairings.
 
 Adoption is explicit. Publishing Repository Documentation v2 does not change the obligations of a
 repository that remains pinned to v1.

@@ -1,7 +1,11 @@
 # Validate branch and pull-request naming before write
 
-This procedure applies to AI agents and automation operating on repositories that adopt Development
-Workflow v4.
+This procedure applies to AI agents and automation operating on repositories whose selected
+Development Workflow requires the pre-write branch and pull-request validation model introduced in
+Development Workflow v4 and preserved by later workflow versions that incorporate it.
+
+Always resolve the workflow version from the repository's complete released compatibility pairing.
+Do not assume that the newest published Development Workflow applies to an older pinned consumer.
 
 ## Branch creation
 
@@ -11,7 +15,7 @@ Before calling a Forgejo branch mutation:
 2. validate the complete declaration against the matching released declaration schema and
    compatibility profile;
 3. load the released Development Workflow profile selected by that declaration;
-4. load the compatible Ticket Specification profile identified by the workflow profile;
+4. load the compatible Ticket Specification profile identified by the selected contract set;
 5. read the referenced ticket and determine its single `Kind/*` label;
 6. derive the regular prefix from the Ticket Specification `branch_prefixes` mapping, or establish
    that the explicit Hotfix path is being used;

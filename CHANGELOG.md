@@ -2,6 +2,38 @@
 
 All notable changes to the repository standards are recorded here.
 
+## 9.3.2 - 2026-09-12
+
+### Fixed
+
+- release-facing entry points now derive their current compatibility boundary from compatibility
+  profile v10 and identify declaration v11 as the latest supported portable pairing instead of
+  presenting declaration v8/v3-era guidance as current;
+- the canonical README, generated Public Core README, reference catalog, architecture guidance,
+  branching guidance, Story Point reference, Contract-first reference, Design Source reference,
+  Design System decision reference, and pre-write naming guidance now distinguish current portable
+  pairings from immutable historical/version-specific semantics;
+- declaration-v10 migration guidance is explicitly historical to its release boundary, is linked from
+  internal and Public Core navigation, and is included in the deterministic Public Core manifest;
+- the initial canary rollout and original Maintenance migration documents are explicitly marked as
+  historical evidence rather than current adoption instructions; and
+- release-guidance freshness regression tests derive the newest compatibility profile and highest
+  supported declaration from machine-readable artifacts, include a controlled stale-pin negative,
+  and protect the repository's deliberate declaration-v10 self-adoption from implicit migration.
+
+### Compatibility
+
+- v9.3.2 changes guidance, navigation, Public Core composition, and regression coverage only; no
+  published normative standard, schema, compatibility pairing, or reference declaration is changed;
+- the v11 Web pairing continues to select Web Application Baseline v3, Deployment Environments v1,
+  and Repository Localization v1; the independently published Deployment Environments v2 contract is
+  not substituted into that pairing;
+- the frozen #58 Product/System Readiness Design Contract and #59 Test Contract remain byte-identical;
+- Repository Standards itself remains explicitly pinned to declaration v10 until a separate reviewed
+  self-adoption migration is qualified; and
+- consumer adoption and Maintenance/Jenkins provider activation remain explicit, release-pinned, and
+  fail-closed.
+
 ## 9.3.1 - 2026-09-12
 
 ### Fixed

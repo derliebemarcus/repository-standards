@@ -2,12 +2,13 @@
 
 ## Repository bootstrap decision
 
-Every repository bootstrap asks whether a `develop` branch is used. The answer selects one
-versioned model in `.repository-standards.yml`.
+Every repository bootstrap decides whether a `develop` branch is used. The answer selects one
+versioned branching model in `.repository-standards.yml` through a supported repository-declaration
+pairing.
 
-The branching semantics are unchanged between Development Workflow v2 and v3. The workflow version
-instead identifies which Ticket Specification and repository-declaration schema are compatible with
-those semantics.
+Branching semantics are versioned by Development Workflow. A consumer must resolve the workflow
+version from its complete compatibility pairing instead of assuming that the newest published
+workflow applies to every repository.
 
 ## Single model
 
@@ -17,7 +18,8 @@ those semantics.
 ticket branch -> pull request -> main
 ```
 
-Regular branches start from `main` and pull requests target `main`.
+Regular ticket branches start from `main` and pull requests target `main`, subject to the selected
+Development Workflow and Ticket Specification contracts.
 
 ## Integration model
 
@@ -28,8 +30,9 @@ ticket branch -> pull request -> develop
 develop -> manual release pull request -> main
 ```
 
-Regular branches start from and return to `develop`. Release promotion is manually created and
-manually merged. `main` and `develop` use equivalent protection and quality gates.
+Regular ticket branches start from and return to `develop`. Release promotion to `main` follows the
+selected workflow contract. Protected delivery branches use their required quality gates according
+to that contract.
 
 ## Jenkins discovery
 
@@ -39,20 +42,38 @@ Normal Jenkins Multibranch Pipeline projects use:
 ^(main|develop|PR-[0-9]+)$
 ```
 
-The filter is valid for both models and both currently supported workflow contract sets.
+The filter is retained by the released workflow/declaration pairings that specify it. Jenkins is an
+implementation provider; the portable branching semantics remain defined by the selected Development
+Workflow.
 
 ## Hotfix
 
-A Hotfix starts from `main`, returns to `main`, and is then reintegrated into `develop` when the
-integration model is active.
+A Hotfix starts from `main`, returns to `main`, and is reintegrated into `develop` when the
+integration model is active, according to the selected workflow's Hotfix requirements.
 
-## Compatible workflow versions
+## Compatibility and workflow evolution
 
-- Declaration schema v1 + Ticket Specification v1 uses Development Workflow v2.
-- Declaration schema v2 + Ticket Specification v2 uses Development Workflow v3.
+The current additive compatibility matrix is:
 
-Development Workflow v3 normatively incorporates the unchanged branching, release, protection,
-Hotfix, and manual-main-build requirements of v2 while adding the Ticket Specification v2 lifecycle
-integration contract.
+`profiles/repository-standards-compatibility-v10.json`
 
-See `docs/reference/compatibility.md` for the machine-readable pairing boundary.
+It preserves all released declaration/workflow pairings through declaration v11. The latest supported
+v11 pairing selects Development Workflow v8. Earlier consumers continue to use the workflow version
+selected by their immutable declaration pairing; publication of v8 did not rewrite v1-v10 consumers.
+
+Development Workflow evolved additively across the released pairings. Later versions add lifecycle,
+quality-gate, supersession, and Contract-first Delivery semantics without making documentation
+statements about an older pairing authoritative for a newer one.
+
+For exact combinations, always use the compatibility profile rather than maintaining a second manual
+list here. See `docs/reference/compatibility.md`.
+
+## Provider status identities
+
+Logical required checks are part of the portable workflow contract where defined. Concrete status
+identities are provider adapters. For example, Forgejo/Gitea Actions may include the event in the
+concrete check identity, while GitHub has different status-check identity semantics.
+
+A provider-specific status name must not be treated as the normative workflow requirement itself.
+Changes to provider event models or check names therefore require coordinated adapter/protection
+updates without silently changing the selected Development Workflow contract.

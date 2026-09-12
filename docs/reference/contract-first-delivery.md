@@ -2,7 +2,8 @@
 
 ## Purpose
 
-Contract-first Delivery v1 makes the sequence from intended behavior to implementation evidence explicit and machine-checkable:
+Contract-first Delivery v1 makes the sequence from intended behavior to implementation evidence
+explicit and machine-checkable:
 
 ```text
 Design Contract
@@ -20,29 +21,40 @@ Conformance Evidence
 Done
 ```
 
-The normative source is `standards/contract-first-delivery/v1/standard.md`. This document explains the operational model without replacing the standard.
+The normative source is `standards/contract-first-delivery/v1/standard.md`. This document explains
+the operational model without replacing the standard.
 
 ## Work products
 
 ### Design Contract
 
-The Design Contract defines the observable behavior or presentation before implementation. Depending on the domain it can describe UI screens/states, APIs, persistent data, integrations, deployment behavior, or another externally observable contract.
+The Design Contract defines the observable behavior or presentation before implementation. Depending
+on the domain it can describe UI screens/states, APIs, persistent data, integrations, deployment
+behavior, or another externally observable contract.
 
-For web UI work the normative visual source SHOULD remain the declared design source, for example Penpot. Exported screenshots are derived test artifacts, not independent design truth.
+For web UI work the normative visual source SHOULD remain the declared design source, for example
+Penpot. Exported screenshots are derived test artifacts, not independent design truth.
 
 ### Test Contract
 
-The Test Contract translates the Design Contract into executable or reproducible assertions, fixtures/states, rendering parameters, provenance, and failure behavior.
+The Test Contract translates the Design Contract into executable or reproducible assertions,
+fixtures/states, rendering parameters, provenance, and failure behavior.
 
-Qualification of the Test Contract answers whether the contract itself is deterministic, reproducible, capable of detecting controlled non-conformance, and fail-closed. It does **not** require the future implementation to pass before implementation begins.
+Qualification of the Test Contract answers whether the contract itself is deterministic,
+reproducible, capable of detecting controlled non-conformance, and fail-closed. It does **not**
+require the future implementation to pass before implementation begins.
 
 ### Implementation
 
-Implementation is performed against the Contract Set frozen at `Status/Ready`. A planned implementation may exist earlier and reference unfinished Design/Test Contract work items. Before Ready those references must resolve to stable artifact locators plus exact revisions and/or digests.
+Implementation is performed against the Contract Set frozen at `Status/Ready`. A planned
+implementation may exist earlier and reference unfinished Design/Test Contract work items. Before
+Ready those references must resolve to stable artifact locators plus exact revisions and/or digests.
 
 ### Conformance Evidence
 
-Evidence records the result for exact Design Contract, Test Contract, implementation, and—where runtime behavior applies—deployed artifact revisions. Evidence must not mutate the contracts it evaluates.
+Evidence records the result for exact Design Contract, Test Contract, implementation, and—where
+runtime behavior applies—deployed artifact revisions. Evidence must not mutate the contracts it
+evaluates.
 
 ## DEV timing
 
@@ -60,13 +72,17 @@ For a web application the recommended sequence is:
 8. retain revision-bound Evidence;
 9. complete the implementation.
 
-A DEV environment therefore SHOULD be reliably deployable by the time implementation starts and MUST exist before any required conformance class claims evidence against a running application.
+A DEV environment therefore SHOULD be reliably deployable by the time implementation starts and
+MUST exist before any required conformance class claims evidence against a running application.
 
-A repository MUST NOT invent runtime evidence when no qualifying runtime exists. Non-runtime unit/contract validation may still run earlier.
+A repository MUST NOT invent runtime evidence when no qualifying runtime exists. Non-runtime
+unit/contract validation may still run earlier.
 
 ## Web conformance classes
 
-Web Application Baseline v2 keeps the following concerns separate:
+The web-conformance model introduced with Web Application Baseline v2 remains in force for later Web
+Application Baseline versions that normatively incorporate v2, including v3. The selected Web
+Application Baseline is authoritative for any additional or superseding requirements.
 
 | Class | Primary question |
 | --- | --- |
@@ -78,19 +94,27 @@ Web Application Baseline v2 keeps the following concerns separate:
 
 Visual comparison MUST NOT substitute for accessibility, functional, or reflow validation.
 
+For v3 consumers, localized routing, language negotiation, language switching, rendered language,
+and localized page states add the language dimensions required by Web Application Baseline v3.
+
 ## Penpot and visual evidence
 
-For Penpot-backed UI work, a Design Contract SHOULD identify at least the relevant project/file/page/frame or screen, state/variant, viewport, and design-source revision/provenance that can be resolved by the consumer environment.
+For Penpot-backed UI work, a Design Contract SHOULD identify at least the relevant
+project/file/page/frame or screen, state/variant, viewport, and design-source revision/provenance that
+can be resolved by the consumer environment.
 
-A visual Test Contract SHOULD identify deterministic rendering parameters, runtime state/fixture, navigation, screenshot target, comparison method, and bounded tolerances.
+A visual Test Contract SHOULD identify deterministic rendering parameters, runtime state/fixture,
+navigation, screenshot target, comparison method, and bounded tolerances.
 
-Expected/actual/diff images are evidence artifacts. A baseline image derived from Penpot remains subordinate to the normative Penpot source and must retain provenance back to it.
+Expected/actual/diff images are evidence artifacts. A baseline image derived from Penpot remains
+subordinate to the normative Penpot source and must retain provenance back to it.
 
 ## Invalidation
 
 Contract-first Delivery uses downstream invalidation rather than historical rewriting:
 
-- Design Contract change → Test Contract qualification, implementation qualification, and Evidence become stale.
+- Design Contract change → Test Contract qualification, implementation qualification, and Evidence
+  become stale.
 - Test Contract change → implementation qualification and Evidence become stale.
 - Implementation/deployed revision change → previous Evidence does not qualify the new revision.
 
@@ -104,10 +128,16 @@ Development Workflow v8 defines three logical gate identities:
 - `test-contract-qualification`
 - `contract-conformance`
 
-Provider integrations map these logical gates to concrete Jenkins/Forgejo/GitHub checks. Repository Standards does not prescribe a Maintenance implementation API.
+Provider integrations map these logical gates to concrete Jenkins/Forgejo/GitHub checks. Repository
+Standards does not prescribe a Maintenance implementation API.
 
 ## Maintenance integration
 
-Maintenance may provide reusable runners for browser orchestration, deployed-revision verification, Penpot provenance, deterministic rendering, image diff, and evidence retention. Consumer repositories remain responsible for product-specific navigation, fixtures/states, selectors, copy, assertions, and Design/Test Contract mappings.
+Maintenance may provide reusable runners for browser orchestration, deployed-revision verification,
+Penpot provenance, deterministic rendering, image diff, and evidence retention. Consumer repositories
+remain responsible for product-specific navigation, fixtures/states, selectors, copy, assertions,
+and Design/Test Contract mappings.
 
-Repository Standards v9 adoption remains fail-closed until the consumer's actual ticket/lifecycle/CI integration can enforce the selected Contract-first requirements.
+Declaration generations that select Contract-first Delivery remain fail-closed until the consumer's
+actual ticket/lifecycle/CI integration can enforce the selected Contract-first requirements. A newer
+Repository Standards release does not activate those provider capabilities implicitly.
