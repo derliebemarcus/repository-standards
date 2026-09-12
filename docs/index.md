@@ -31,11 +31,12 @@ Start with:
 - `how-to/use-standards-in-ai-prompts.md` for AI-agent consumption; and
 - `public-distribution.md` for the generated GitHub/Public Core boundary.
 
-Product/System Readiness v1 now has an additive repository/ticket integration surface:
+Product/System Readiness v1 has an additive repository/ticket integration surface:
 `.product-readiness.yml`, its fail-closed declaration schema/profile, Ticket Specification v5, and
-Repository Standards declaration v11. The declaration-v11 compatibility pairings remain candidate
-until the separate release/conformance qualification completes. Existing released declaration and
-Ticket Specification versions are unchanged and do not adopt readiness implicitly.
+Repository Standards declaration v11. The declaration-v11 compatibility pairings are `supported`
+beginning with immutable Repository Standards release v9.3.0. Existing released declaration and
+Ticket Specification versions are unchanged and do not adopt readiness implicitly; migration remains
+explicit and release-pinned.
 
 Applicability, Subject Identity, long-term targets, Product Stage, and Product-/Release-Epic
 Increment Targets are authored intent. Candidate, Assessed, Established, Preservation, and

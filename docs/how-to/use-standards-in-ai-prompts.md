@@ -16,8 +16,8 @@ version, selected standards, and branching model form one compatibility contract
 validate the whole pairing and MUST NOT infer adoption merely because a standard or adapter exists.
 
 For Product/System Readiness v1, declaration v11 is the additive integration boundary. The v11
-pairings are candidate until their separate release/conformance qualification is complete; an agent
-MUST NOT migrate a consumer to them before they are released as supported.
+pairings are `supported` beginning with immutable Repository Standards release v9.3.0. An agent MUST
+pin v9.3.0 or a later release that preserves the pairing and MUST NOT migrate a consumer implicitly.
 
 When a released compatible declaration selects Product/System Readiness v1, applicability is still
 not derived from `.repository-standards.yml`, repository profile, documentation profile, web profile,

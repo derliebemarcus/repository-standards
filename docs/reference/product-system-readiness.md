@@ -203,13 +203,15 @@ not replace the independent security-governance process or security gates.
 
 Repository Standards declaration v11 is the additive adoption boundary for Ticket Specification v5
 and Product/System Readiness v1. The v11 pairings in
-`profiles/repository-standards-compatibility-v10.json` are intentionally `candidate` until the
-separate release/conformance qualification is complete. Existing declaration versions and Ticket
-Specification v1-v4 consumers remain unchanged.
+`profiles/repository-standards-compatibility-v10.json` are `supported` beginning with immutable
+Repository Standards release v9.3.0. Existing declaration versions and Ticket Specification v1-v4
+consumers remain unchanged.
 
-Adoption is explicit and opt in. Publishing these artifacts does not silently add Product/System
-Readiness to an older consumer, infer applicability, or activate provider-side gates. See
-`docs/repository-contract-v11-migration.md` and `docs/ticket-standard-v5-migration.md`.
+Adoption is explicit and opt in. A consumer MUST pin v9.3.0 or a later immutable release that
+preserves the pairing and must qualify its compatible writers/validators before migrating. Publishing
+these artifacts does not silently add Product/System Readiness to an older consumer, infer
+applicability, or activate provider-side gates. See `docs/repository-contract-v11-migration.md` and
+`docs/ticket-standard-v5-migration.md`.
 
 ## Related contracts
 

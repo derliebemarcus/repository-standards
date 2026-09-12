@@ -55,5 +55,7 @@ Product/System Readiness v1 evidence is complete, including successful intended 
 ## Compatibility
 
 Ticket Specification v1-v4 are immutable. Migration to v5 does not modify their schemas, profiles,
-templates, adapters, or historical tickets. The compatible Repository Standards v11 pairings remain
-candidate until their separate release/conformance qualification is complete.
+templates, adapters, or historical tickets. The compatible Repository Standards v11 pairings are
+`supported` beginning with immutable Repository Standards release v9.3.0. Adoption remains explicit:
+a consumer MUST pin v9.3.0 or a later release that preserves the pairing and qualify compatible v5
+writer/validator automation before migrating.

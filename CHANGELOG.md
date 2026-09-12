@@ -2,6 +2,20 @@
 
 All notable changes to the repository standards are recorded here.
 
+## 9.3.1 - 2026-09-12
+
+### Fixed
+
+- release-facing Product/System Readiness v1 guidance now consistently reflects that the declaration-v11 pairings are `supported` beginning with immutable Repository Standards release v9.3.0 rather than retaining pre-release `candidate` wording;
+- Public Core navigation, AI-consumption guidance, readiness reference guidance, Ticket Specification v5 migration guidance, and the internal documentation index now expose the same explicit release-pinned adoption boundary;
+- regression coverage prevents stale declaration-v11 candidate-state wording from reappearing on the released guidance surfaces.
+
+### Compatibility
+
+- v9.3.1 changes guidance and release evidence only; the Product/System Readiness v1, Ticket Specification v5, declaration-v11, and compatibility-v10 normative contracts are unchanged from v9.3.0;
+- the frozen #58 Design Contract and #59 Test Contract remain byte-identical, and all earlier released standards and compatibility pairings remain immutable;
+- consumer adoption remains explicit and release-pinned, and productive Maintenance/Jenkins readiness evaluation remains out of scope.
+
 ## 9.3.0 - 2026-09-12
 
 ### Added
