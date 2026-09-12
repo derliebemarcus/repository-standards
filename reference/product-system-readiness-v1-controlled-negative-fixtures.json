@@ -1,0 +1,38 @@
+{
+  "schema": "product-system-readiness-controlled-negative-fixtures-v1",
+  "governing_design_contract": {
+    "locator": "standards/product-system-readiness/v1/standard.md",
+    "revision": "fa10d783440c4a798f3fe5b6fa55ac6166ce77da",
+    "digest": "2729a92f5a35091b0ca28b7eda361007fa7b0c6f"
+  },
+  "fixtures": [
+    {"id":"intent-authored-trl","kind":"intent-negative","payload":{"schema":"product-system-readiness-intent-v1","applicability":"required","rationale":null,"subjects":[{"kind":"product","identity":"product:x","long_term_target":9,"increment_targets":[]}],"trl":9},"expected":{"errors":["E_AUTHORED_CURRENT_READINESS"]}},
+    {"id":"intent-authored-assessed","kind":"intent-negative","payload":{"schema":"product-system-readiness-intent-v1","applicability":"required","rationale":null,"subjects":[{"kind":"product","identity":"product:x","long_term_target":9,"increment_targets":[],"assessed_trl":9}]},"expected":{"errors":["E_AUTHORED_CURRENT_READINESS"]}},
+    {"id":"intent-not-applicable-empty-rationale","kind":"intent-negative","payload":{"schema":"product-system-readiness-intent-v1","applicability":"not-applicable","rationale":"","subjects":[]},"expected":{"errors":["E_RATIONALE_REQUIRED"]}},
+    {"id":"intent-unknown-subject-kind","kind":"intent-negative","payload":{"schema":"product-system-readiness-intent-v1","applicability":"required","rationale":null,"subjects":[{"kind":"repository","identity":"repo:x","long_term_target":9,"increment_targets":[]}]},"expected":{"errors":["E_SUBJECT_KIND"]}},
+    {"id":"unassessed-no-evidence","kind":"assessment-empty","parameters":{"through_level":null},"expected":{"candidate":"unassessed","not_equal":[0,1]}},
+    {"id":"unknown-r1-does-not-become-trl1","kind":"assessment","parameters":{"through_level":1,"unknown_criteria":["R1.1"]},"expected":{"candidate":"unassessed","findings":["E_UNKNOWN_NOT_SATISFIED"]}},
+    {"id":"decision-2-dev-prototype-no-auto-trl8","kind":"assessment","decision_case":2,"parameters":{"through_level":7,"environment_name":"DEV"},"expected":{"candidate":7}},
+    {"id":"production-stage-insufficient-evidence","kind":"stage-assessment","stage":"production","parameters":{"through_level":3,"environment_name":"PROD"},"expected":{"candidate":3}},
+    {"id":"decision-5-prod-deployment-incomplete-qualification","kind":"assessment","decision_case":5,"parameters":{"through_level":7,"environment_name":"PROD","operational_mode":"deployment-only"},"expected":{"candidate":7}},
+    {"id":"decision-6-smoke-after-qualification-not-trl9","kind":"assessment","decision_case":6,"parameters":{"through_level":9,"environment_name":"PROD","operational_mode":"smoke-only"},"expected":{"candidate":8,"findings":["E_OPERATIONAL_PROOF_INSUFFICIENT"]}},
+    {"id":"trl9-deployment-only","kind":"assessment","parameters":{"through_level":9,"environment_name":"PROD","operational_mode":"deployment-only"},"expected":{"candidate":8,"findings":["E_OPERATIONAL_PROOF_INSUFFICIENT"]}},
+    {"id":"trl9-health-only","kind":"assessment","parameters":{"through_level":9,"environment_name":"PROD","operational_mode":"health-only"},"expected":{"candidate":8,"findings":["E_OPERATIONAL_PROOF_INSUFFICIENT"]}},
+    {"id":"trl9-smoke-only","kind":"assessment","parameters":{"through_level":9,"environment_name":"PROD","operational_mode":"smoke-only"},"expected":{"candidate":8,"findings":["E_OPERATIONAL_PROOF_INSUFFICIENT"]}},
+    {"id":"trl9-brief-reachability","kind":"assessment","parameters":{"through_level":9,"environment_name":"PROD","operational_mode":"brief-reachability"},"expected":{"candidate":8,"findings":["E_OPERATIONAL_PROOF_INSUFFICIENT"]}},
+    {"id":"trl9-synthetic-only","kind":"assessment","parameters":{"through_level":9,"environment_name":"PROD","operational_mode":"synthetic-only"},"expected":{"candidate":8,"findings":["E_OPERATIONAL_PROOF_INSUFFICIENT"]}},
+    {"id":"trl8-dev-unqualified-context","kind":"assessment","parameters":{"through_level":8,"environment_name":"DEV","context_adequate":false},"expected":{"candidate":7,"findings":["E_QUALIFICATION_CONTEXT"]}},
+    {"id":"qualification-boolean-shortcut","kind":"qualification-shortcut","parameters":{"through_level":8},"expected":{"candidate":7,"findings":["E_QUALIFICATION_CONTEXT"]}},
+    {"id":"prod-name-alone-no-readiness","kind":"assessment-empty","decision_case":13,"external_context":{"repository_environment_url":"https://prod.example.invalid/"},"parameters":{"through_level":null,"environment_name":"PROD"},"expected":{"candidate":"unassessed"}},
+    {"id":"stale-revision-fails-closed","kind":"assessment","decision_case":14,"parameters":{"through_level":9,"evidence_source_revision":"revision-a"},"expected":{"candidate":"unassessed","findings":["E_REVISION_MISMATCH"]}},
+    {"id":"cross-artifact-without-equivalence","kind":"assessment","decision_case":15,"parameters":{"through_level":8,"evidence_artifact_digest":"sha256:artifact-a","evidence_context_id":"qualification-context"},"expected":{"candidate":"unassessed","findings":["E_ARTIFACT_MISMATCH"]}},
+    {"id":"cross-context-without-equivalence","kind":"assessment","parameters":{"through_level":8,"evidence_context_id":"qualification-a"},"expected":{"candidate":"unassessed","findings":["E_CONTEXT_MISMATCH"]}},
+    {"id":"contract-mismatch-fails-closed","kind":"contract-mismatch","parameters":{"through_level":8},"expected":{"candidate":"unassessed","findings":["E_CONTRACT_MISMATCH"]}},
+    {"id":"expired-validity-fails-closed","kind":"assessment","parameters":{"through_level":8,"expired":true},"expected":{"candidate":"unassessed","findings":["E_EXPIRED_EVIDENCE"]}},
+    {"id":"subject-mismatch-fails-closed","kind":"subject-mismatch","parameters":{"through_level":8},"expected":{"candidate":"unassessed","findings":["E_SUBJECT_MISMATCH"]}},
+    {"id":"missing-provenance-fails-closed","kind":"missing-provenance","parameters":{"through_level":8},"expected":{"candidate":"unassessed","findings":["E_MISSING_PROVENANCE"]}},
+    {"id":"decision-9-fundamental-architecture-requires-requalification","kind":"fundamental-change","decision_case":9,"trigger":"architecture-or-execution-model","change_kind":"feature","expected":{"candidate":"unassessed","established":null,"requalification_required":true,"historical_level":9}},
+    {"id":"ordinary-looking-change-crosses-validity-boundary","kind":"fundamental-change","trigger":"trust-boundary-or-security-architecture","change_kind":"feature","expected":{"candidate":"unassessed","established":null,"requalification_required":true,"historical_level":9}},
+    {"id":"decision-16-technical-security-qualification-missing","kind":"assessment","decision_case":16,"parameters":{"through_level":9,"missing_criteria":["R8.5"]},"expected":{"candidate":7}}
+  ]
+}

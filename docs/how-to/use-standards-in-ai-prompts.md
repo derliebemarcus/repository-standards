@@ -2,61 +2,71 @@
 
 ## Principle
 
-Do not copy the complete standard into project prompts. A copied prompt becomes an uncontrolled
-policy fork.
-
-Use three layers:
+Do not copy complete standards into project prompts. Copied policy becomes an uncontrolled fork.
+Use three layers instead:
 
 1. released normative standards in `siczb/repository-standards`;
-2. generated AI adapters in `reference/ai/`;
-3. a short project bootstrap instruction that loads the pinned declaration and adapter.
+2. versioned/generated AI adapters under `reference/ai/`; and
+3. a short project bootstrap instruction that loads the repository's pinned declaration and adapter.
 
 ## Repository declaration
 
-Each repository adopting the standards stores `.repository-standards.yml`. The declaration version,
-standard versions, and branching model form one compatibility contract. An AI agent MUST validate
-the complete pairing and MUST NOT infer compatibility from independently available artifacts.
+A repository adopting Repository Standards stores `.repository-standards.yml`. Its declaration
+version, selected standards, and branching model form one compatibility contract. An AI agent MUST
+validate the whole pairing and MUST NOT infer adoption merely because a standard or adapter exists.
 
-Declaration schema v1 uses Ticket Specification v1 and Development Workflow v2:
+For Product/System Readiness v1, declaration v11 is the additive integration boundary. The v11
+pairings are candidate until their separate release/conformance qualification is complete; an agent
+MUST NOT migrate a consumer to them before they are released as supported.
 
-- `reference/repository-standards.single.yml`;
-- `reference/repository-standards.integration.yml`.
+When a released compatible declaration selects Product/System Readiness v1, applicability is still
+not derived from `.repository-standards.yml`, repository profile, documentation profile, web profile,
+or deployment profile. The repository-owned `.product-readiness.yml` is authoritative for:
 
-Declaration schema v2 uses Ticket Specification v2 and Development Workflow v3:
+- applicability;
+- Product/System Subject kind;
+- stable Subject Identity; and
+- long-term Product/System Readiness Target.
 
-- `reference/repository-standards-v2.single.yml`;
-- `reference/repository-standards-v2.integration.yml`.
+## Ticket Specification v5
 
-Declaration schema v3 reuses Ticket Specification v2 and Development Workflow v3 and additionally
-adopts Web Application Baseline v1 plus Deployment Environments v1:
+For Ticket Specification v5, the agent MUST load `reference/ai/ticket-authoring-v5.md` and preserve
+the generated `## Product increment` section. Non-targeted tickets use
+`product_increment: null`. Only a Product-/Release-Epic deliberately declares a non-null increment.
 
-- `reference/repository-standards-v3.single.yml`;
-- `reference/repository-standards-v3.integration.yml`.
+The following are authored intent:
 
-The current canonical pairing matrix is
-`profiles/repository-standards-compatibility-v2.json`. The published v1 matrix remains immutable for
-older contract releases. Unsupported combinations are rejected.
+- Product Stage;
+- Increment Readiness Target; and
+- Subject Identity binding.
 
-An AI agent must not infer Ticket Specification v2, Web Application Baseline v1, or Deployment
-Environments v1 adoption merely because those standards or adapters exist. The repository must
-explicitly declare a supported contract set and required lifecycle/deployment writers must already be
-compatible.
+The following remain evidence-derived and MUST NOT be authored as authoritative ticket metadata:
+Candidate, Assessed, Established, Preservation, Requalification, current readiness, and actual
+readiness.
 
-## Web/deployment reasoning boundary
+An AI agent MUST preserve these boundaries:
 
-For a declaration-v3 consumer, an AI agent MUST keep these dimensions distinct:
+```text
+authored intent != derived readiness
+target != candidate
+target != assessed
+target != established
+deployment != operational proof
+PROD != TRL 9
+product stage != TRL
+```
 
-- source branch/revision;
-- artifact release state (`non-release`, `release-candidate`, or `release`);
-- runtime environment (DEV, optional STAGE, or PROD).
+An `mvp` may target and establish TRL 9 for its deliberately bounded scope when the complete
+evidence supports it. `production` implies no TRL. The agent MUST NOT infer either dimension from
+the other.
 
-The agent MUST NOT infer release state from `main`, DEV, STAGE, or PROD. Public provenance is read
-from artifact metadata. PROD requires an immutable final-release artifact.
+Before setting a readiness-targeted Product-/Release-Epic to `Status/Done`, the agent MUST require
+an exact qualifying assessment reference, verify that it binds to the same Subject Identity, and
+verify that the evidence-derived Assessed Readiness meets or exceeds the authored target. Missing,
+stale, mismatched, or insufficient evidence fails closed.
 
-When changing a user-facing website under Web Application Baseline v1, the agent must assess impact
-on `/impressum`, `/datenschutz`, and `/barrierefreiheit` whenever operator facts, data processing,
-accessibility status, application shell/design, or artifact-provenance behavior changes. Unknown
-legal facts must not be invented.
+Product/System Readiness is not a security classification. The agent MUST NOT infer security
+approval, low risk, low criticality, or similar security/risk state from TRL.
 
 ## Bootstrap instruction
 
@@ -65,9 +75,10 @@ A project prompt should contain only the loading and enforcement contract:
 ```text
 Before any ticket or repository write, read `.repository-standards.yml`, validate its complete
 released contract set, load the declared standards and matching AI adapter from
-`siczb/repository-standards`, and validate the proposed change. Do not reconstruct rules from memory
-or an older conversation. Do not invent missing facts. Apply defaults and trigger required
-reconciliation exactly as defined by the loaded adapter.
+`siczb/repository-standards`, and validate the proposed change. Load repository-owned sidecars
+required by that contract set. Do not reconstruct rules from memory or an older conversation. Do
+not invent missing facts or derive authored intent from unrelated repository state. Apply defaults,
+validation, lifecycle rules, and required reconciliation exactly as defined by the loaded adapter.
 ```
 
 Repository-specific operational instructions MAY be added after this bootstrap. They MUST NOT
@@ -75,37 +86,34 @@ weaken or duplicate the standard.
 
 ## Agent write flow
 
-An AI agent should perform these steps:
+An AI agent should:
 
 1. read `.repository-standards.yml`;
-2. validate the declaration version and standard pairing against the released compatibility matrix;
-3. resolve released standard artifacts;
-4. determine the declared Ticket Specification version;
-5. load the matching `reference/ai/ticket-authoring-v<major>.md` adapter;
-6. select the ticket family;
-7. collect available facts;
-8. render the generated family template;
-9. classify labels and impacts;
-10. validate the complete proposal;
-11. write through a standard-aware wrapper;
-12. trigger dependency reconciliation when direct blockers changed.
+2. validate the complete pairing against the released compatibility profile;
+3. resolve the selected released standard artifacts;
+4. load required repository-owned sidecars;
+5. determine the selected Ticket Specification version;
+6. load `reference/ai/ticket-authoring-v<major>.md`;
+7. select the ticket family and generated template;
+8. collect only available facts and mark material unknowns explicitly;
+9. author only fields owned by the selected contracts;
+10. validate the complete proposal before writing;
+11. write through a standard-aware interface; and
+12. trigger required reconciliation and provider checks after the write.
 
-For Ticket Specification v2 lifecycle operations, the adapter additionally validates Forgejo issue
-state together with `Status/*`, uses the canonical `closed` plus `Status/Done` completed pair, and
-requires an explicit active status for reopen transitions.
+For Product/System Readiness v1, step 4 includes `.product-readiness.yml`. The agent MUST keep
+multiple Subjects independent and MUST NOT calculate a repository-wide TRL.
 
-A generic Forgejo issue operation should not be the primary AI interface. The wrapper applies
-defaults, enforces cardinality, validates required sections, archives changes, and triggers
-dependent automation.
+## Updating prompts and migrations
 
-## Updating prompts
+The bootstrap normally stays unchanged because declaration and adapter selection are version-aware.
+When a repository changes declaration or pinned standard versions, update the declaration through a
+reviewed migration and re-run its contract checks.
 
-When a repository changes its declaration or pinned standard versions, update the declaration and
-re-run its contract checks. Migration to declaration schema v2 additionally requires the consumer
-preconditions in `docs/repository-contract-v2-migration.md`. Migration to declaration schema v3
-additionally requires the web/artifact/deployment preconditions in
-`docs/repository-contract-v3-migration.md`.
+For Product/System Readiness adoption, follow `docs/repository-contract-v11-migration.md` and
+`docs/ticket-standard-v5-migration.md`. Do not synthesize historical Product Stage, targets,
+assessments, or readiness state during migration.
 
-The AI bootstrap itself normally remains unchanged because declaration and adapter selection are
-version-aware. Long-lived prompt text must not hard-code a Ticket Specification, Development
-Workflow, Web Application Baseline, or Deployment Environments version.
+Long-lived prompt text SHOULD NOT hard-code a Ticket Specification, Development Workflow,
+Repository Documentation, Product/System Readiness, Web Application Baseline, or Deployment
+Environments version unless the prompt is intentionally bound to that exact released contract set.

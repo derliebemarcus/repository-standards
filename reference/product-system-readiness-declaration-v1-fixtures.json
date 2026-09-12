@@ -1,0 +1,107 @@
+{
+  "positive_declarations": [
+    {
+      "name": "product-required",
+      "declaration": {"schema":"product-system-readiness-intent-v1","applicability":"required","rationale":null,"subjects":[{"kind":"product","identity":"product:example-service","long_term_target":9,"stage":"production"}]}
+    },
+    {
+      "name": "operated-system-required",
+      "declaration": {"schema":"product-system-readiness-intent-v1","applicability":"required","rationale":null,"subjects":[{"kind":"system","identity":"system:operations-platform","long_term_target":9,"stage":"production"}]}
+    },
+    {
+      "name": "library-not-applicable",
+      "declaration": {"schema":"product-system-readiness-intent-v1","applicability":"not-applicable","rationale":"Shared library only; no bounded product or operated system subject is declared.","subjects":[]}
+    },
+    {
+      "name": "infrastructure-system",
+      "declaration": {"schema":"product-system-readiness-intent-v1","applicability":"required","rationale":null,"subjects":[{"kind":"system","identity":"system:edge-routing","long_term_target":9,"stage":"production"}]}
+    },
+    {
+      "name": "mvp-target-nine",
+      "declaration": {"schema":"product-system-readiness-intent-v1","applicability":"required","rationale":null,"subjects":[{"kind":"product","identity":"product:bounded-mvp","long_term_target":9,"stage":"mvp"}]}
+    },
+    {
+      "name": "multiple-independent-subjects",
+      "declaration": {"schema":"product-system-readiness-intent-v1","applicability":"required","rationale":null,"subjects":[{"kind":"product","identity":"product:control-plane","long_term_target":9},{"kind":"system","identity":"system:worker-fleet","long_term_target":8}]}
+    }
+  ],
+  "negative_declarations": [
+    {
+      "name": "required-without-subject",
+      "declaration": {"schema":"product-system-readiness-intent-v1","applicability":"required","rationale":null,"subjects":[]},
+      "finding": "E_SUBJECT_REQUIRED:$.subjects"
+    },
+    {
+      "name": "required-without-target",
+      "declaration": {"schema":"product-system-readiness-intent-v1","applicability":"required","rationale":null,"subjects":[{"kind":"product","identity":"product:no-target"}]},
+      "finding": "E_TARGET:$.subjects[0].long_term_target"
+    },
+    {
+      "name": "not-applicable-without-rationale",
+      "declaration": {"schema":"product-system-readiness-intent-v1","applicability":"not-applicable","rationale":null,"subjects":[]},
+      "finding": "E_RATIONALE_REQUIRED:$.rationale"
+    },
+    {
+      "name": "unknown-subject-kind",
+      "declaration": {"schema":"product-system-readiness-intent-v1","applicability":"required","rationale":null,"subjects":[{"kind":"library","identity":"product:not-a-product","long_term_target":9}]},
+      "finding": "E_SUBJECT_KIND:$.subjects[0].kind"
+    },
+    {
+      "name": "invalid-target",
+      "declaration": {"schema":"product-system-readiness-intent-v1","applicability":"required","rationale":null,"subjects":[{"kind":"product","identity":"product:bad-target","long_term_target":10}]},
+      "finding": "E_TARGET:$.subjects[0].long_term_target"
+    },
+    {
+      "name": "unstable-identity",
+      "declaration": {"schema":"product-system-readiness-intent-v1","applicability":"required","rationale":null,"subjects":[{"kind":"product","identity":"main","long_term_target":9}]},
+      "finding": "E_SUBJECT_IDENTITY:$.subjects[0].identity"
+    },
+    {
+      "name": "authored-actual-trl",
+      "declaration": {"schema":"product-system-readiness-intent-v1","applicability":"required","rationale":null,"actual_trl":9,"subjects":[{"kind":"product","identity":"product:forbidden-actual","long_term_target":9}]},
+      "finding": "E_AUTHORED_CURRENT_READINESS:$.actual_trl"
+    },
+    {
+      "name": "authored-candidate",
+      "declaration": {"schema":"product-system-readiness-intent-v1","applicability":"required","rationale":null,"subjects":[{"kind":"product","identity":"product:forbidden-candidate","long_term_target":9,"candidate":9}]},
+      "finding": "E_AUTHORED_CURRENT_READINESS:$.subjects[0].candidate"
+    },
+    {
+      "name": "authored-assessed",
+      "declaration": {"schema":"product-system-readiness-intent-v1","applicability":"required","rationale":null,"subjects":[{"kind":"product","identity":"product:forbidden-assessed","long_term_target":9,"assessed":9}]},
+      "finding": "E_AUTHORED_CURRENT_READINESS:$.subjects[0].assessed"
+    },
+    {
+      "name": "authored-established",
+      "declaration": {"schema":"product-system-readiness-intent-v1","applicability":"required","rationale":null,"subjects":[{"kind":"product","identity":"product:forbidden-established","long_term_target":9,"established":9}]},
+      "finding": "E_AUTHORED_CURRENT_READINESS:$.subjects[0].established"
+    },
+    {
+      "name": "sidecar-increment-target-forbidden",
+      "declaration": {"schema":"product-system-readiness-intent-v1","applicability":"required","rationale":null,"subjects":[{"kind":"product","identity":"product:ticket-owned-target","long_term_target":9,"increment_targets":[{"identity":"release-1","target":8}]}]},
+      "finding": "E_INCREMENT_TARGET_TICKET_OWNED:$.subjects[0].increment_targets"
+    },
+    {
+      "name": "unknown-field",
+      "declaration": {"schema":"product-system-readiness-intent-v1","applicability":"required","rationale":null,"subjects":[{"kind":"product","identity":"product:unknown-field","long_term_target":9,"repository_trl":9}]},
+      "finding": "E_UNKNOWN_FIELD:$.subjects[0].repository_trl"
+    }
+  ],
+  "epic_cases": [
+    {
+      "name": "mvp-target-nine-is-allowed",
+      "ticket": {"kind":"Kind/Epic","status":"Status/In Progress","product_increment":{"kind":"release","subject_identity":"product:bounded-mvp","stage":"mvp","readiness_target":9,"assessment":null}},
+      "expect": "stage-does-not-infer-or-cap-trl"
+    },
+    {
+      "name": "production-does-not-imply-readiness",
+      "ticket": {"kind":"Kind/Epic","status":"Status/Done","product_increment":{"kind":"release","subject_identity":"product:service","stage":"production","readiness_target":9,"assessment":null}},
+      "finding": "E_READINESS_EVIDENCE_REQUIRED:$.product_increment.assessment"
+    },
+    {
+      "name": "targeted-epic-without-qualified-evidence",
+      "ticket": {"kind":"Kind/Epic","status":"Status/Done","product_increment":{"kind":"product","subject_identity":"product:service","stage":"mvp","readiness_target":8,"assessment":{"type":"git","locator":"evidence/readiness.json","revision":"deadbeef"}}},
+      "finding": "E_READINESS_EVIDENCE_REQUIRED:$assessment"
+    }
+  ]
+}

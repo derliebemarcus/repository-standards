@@ -2,6 +2,29 @@
 
 All notable changes to the repository standards are recorded here.
 
+## 9.3.0 - 2026-09-12
+
+### Added
+
+- Product/System Readiness v1 with frozen Design Contract and Test Contract provenance, cumulative software TRL 1-9 qualification semantics, explicit repository-owned applicability and Subject targets, assessment/evidence schemas, complete traceability, and deterministic positive and controlled-negative fixtures;
+- Ticket Specification v5 as the additive successor to v4, adding Product-/Release-Epic Product Stage, Subject binding, Increment Readiness Target, and exact assessment provenance while keeping current readiness evidence-derived;
+- Repository Standards declaration schema v11, compatibility profile v10, Core/Web reference declarations, validators, generated Ticket v5 AI/templates, migration guidance, documentation, tests, and deterministic Public Core coverage for explicit Product/System Readiness v1 adoption.
+
+### Changed
+
+- compatibility profile v10 transitions only its two previously unreleased declaration-v11 pairings from `candidate` to `supported` after the #61 release/conformance qualification while preserving every v9 pairing unchanged;
+- `target != candidate != assessed != established`, `deployment != operational proof`, `PROD != TRL 9`, and `Product Stage != TRL` remain mandatory semantic boundaries;
+- an MVP may establish TRL 9 for its deliberately bounded scope only when cumulative qualification and successful real operational use are evidenced;
+- Readiness Applicability remains an explicit governance decision, and Candidate, Assessed, Established, Preservation, and Requalification remain derived rather than authored states; repository-wide TRL aggregation remains forbidden.
+
+### Compatibility
+
+- Repository Standards v9.2.0 and all earlier released standards, schemas, profiles, references, compatibility pairings, and consumer pins remain immutable and supported;
+- declaration v11, Ticket Specification v5, and Product/System Readiness v1 are additive and opt-in; publication does not migrate any consumer automatically;
+- consumers may adopt declaration v11 only by pinning an immutable release that contains the supported v11 pairing and after compatible Ticket Specification v5 / Product/System Readiness v1 writers and validators are qualified; productive Maintenance/Jenkins readiness assessment and gate activation remain out of scope;
+- TRL 9 is not a Security-, Risk-, Exposure-, Data-, or Criticality-classification and cannot satisfy those independent governance gates;
+- Capability Promotion v1 from #47 / PR #51 is not part of v9.3.0 and remains excluded from this release.
+
 ## 9.2.0 - 2026-09-09
 
 ### Added

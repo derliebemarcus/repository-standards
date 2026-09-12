@@ -1,0 +1,103 @@
+{
+  "contract": "product-system-readiness-test-contract",
+  "version": "1.0.0",
+  "role": "test-contract",
+  "governing_design_contract": {
+    "work_item": "siczb/repository-standards#58",
+    "artifact": {
+      "type": "git",
+      "locator": "standards/product-system-readiness/v1/standard.md",
+      "revision": "fa10d783440c4a798f3fe5b6fa55ac6166ce77da",
+      "digest": "2729a92f5a35091b0ca28b7eda361007fa7b0c6f"
+    }
+  },
+  "identity": {
+    "locator": "profiles/product-system-readiness-test-contract-v1.json",
+    "revision_binding": "bind the Git artifact to the actual immutable merge revision when consumed",
+    "predicted_revision_forbidden": true
+  },
+  "assets": {
+    "intent_schema": "schemas/product-system-readiness-intent-v1.schema.json",
+    "assessment_schema": "schemas/product-system-readiness-assessment-v1.schema.json",
+    "traceability": "reference/product-system-readiness-v1-traceability.json",
+    "positive_fixtures": "reference/product-system-readiness-v1-positive-fixtures.json",
+    "controlled_negative_fixtures": "reference/product-system-readiness-v1-controlled-negative-fixtures.json",
+    "oracle": "tools/product_system_readiness_test_contract.py",
+    "tests": "tests/test_product_system_readiness_v1.py"
+  },
+  "scope_boundary": {
+    "repository_declaration_adoption": false,
+    "ticket_specification_readiness_fields": false,
+    "maintenance_evaluator": false,
+    "jenkins_readiness_gate": false,
+    "consumer_migration": false,
+    "real_repository_assessment": false
+  },
+  "semantics": {
+    "trl_scale": {"minimum": 1, "maximum": 9, "unassessed_outside_scale": true, "ordinal_not_metric": true},
+    "cumulative": true,
+    "fail_closed": true,
+    "missing_evidence_is_pass": false,
+    "unknown_is_satisfied": false,
+    "claim_is_evidence": false,
+    "environment_name_is_readiness_evidence": false,
+    "deployment_is_operational_proof": false,
+    "repository_aggregation": "forbidden",
+    "authored": ["applicability", "subject-kind", "subject-identity", "long-term-target", "increment-target", "product-stage"],
+    "derived": ["candidate-trl", "assessed-trl", "established-trl", "preservation-result", "requalification-result"],
+    "stages_are_orthogonal_to_trl": true,
+    "qualification_context_boolean_shortcut_allowed": false,
+    "cross_boundary_reuse": "explicit-criterion-specific-equivalence-only",
+    "universal_minimum_operational_duration": null
+  },
+  "levels": [
+    {"level": 1, "criteria": ["R1.1", "R1.2", "R1.3", "R1.4"], "required_evidence_classes": ["research-principle"]},
+    {"level": 2, "criteria": ["R2.1", "R2.2", "R2.3", "R2.4"], "required_evidence_classes": ["concept-architecture-requirement", "analytical-feasibility"]},
+    {"level": 3, "criteria": ["R3.1", "R3.2", "R3.3", "R3.4", "R3.5"], "required_evidence_classes": ["proof-of-concept", "controlled-test", "limitations"]},
+    {"level": 4, "criteria": ["R4.1", "R4.2", "R4.3", "R4.4", "R4.5"], "required_evidence_classes": ["integration", "controlled-validation", "environment-prediction"]},
+    {"level": 5, "criteria": ["R5.1", "R5.2", "R5.3", "R5.4", "R5.5"], "required_evidence_classes": ["end-to-end", "relevant-environment", "fidelity-gap"]},
+    {"level": 6, "criteria": ["R6.1", "R6.2", "R6.3", "R6.4", "R6.5"], "required_evidence_classes": ["high-fidelity-prototype", "realistic-workload", "failure-recovery"]},
+    {"level": 7, "criteria": ["R7.1", "R7.2", "R7.3", "R7.4", "R7.5"], "required_evidence_classes": ["operationally-relevant-demonstration", "scenario", "context-fidelity"]},
+    {"level": 8, "criteria": ["R8.1", "R8.2", "R8.3", "R8.4", "R8.5", "R8.6", "R8.7"], "required_evidence_classes": ["final-artifact-configuration", "qualification-context", "complete-vv-conformance", "deployment-rollback", "residual-limitations"]},
+    {"level": 9, "criteria": ["R9.1", "R9.2", "R9.3", "R9.4", "R9.5", "R9.6"], "required_evidence_classes": ["operational-lineage", "real-operational-use", "sufficiency-boundary", "operational-results", "incident-limitations", "sustaining-support"]}
+  ],
+  "qualification_context": {
+    "material_dimensions_representable": ["runtime", "database", "infrastructure", "platform", "security_configuration", "trust_relationships", "integrations", "data_workload", "performance", "failure_recovery", "deployment_rollback"],
+    "environment_name_has_no_readiness_semantics": true,
+    "boolean_equivalence_claim_sufficient": false
+  },
+  "evidence_provenance": {
+    "dimensions_representable": ["readiness-subject", "subject-identity", "repository-consumer", "source-revision", "artifact-identity-digest", "artifact-release-state", "design-contract", "test-contract", "build-ci", "security", "accessibility", "deployment", "qualification-context", "operational-evidence", "tool", "runner", "runner-version", "execution-parameters", "execution-timestamp", "result", "artifact-report-locator", "limitations", "validity-boundaries"],
+    "invalidation": ["subject-mismatch", "source-revision-mismatch", "artifact-mismatch", "contract-mismatch", "qualification-context-mismatch", "missing-provenance", "expired-validity-boundary", "fundamental-change"]
+  },
+  "lifecycle": {
+    "modes": ["establishment", "preservation", "requalification"],
+    "historical_readiness_append_only": true,
+    "preservation_requires_lineage_impact_analysis_and_valid_evidence": true,
+    "fundamental_change_triggers": ["architecture-or-execution-model", "runtime-platform-or-infrastructure-model", "trust-boundary-or-security-architecture", "persistence-or-data-architecture", "critical-operating-or-failure-assumptions", "subject-identity-or-material-scope", "operational-context-or-critical-integrations", "operational-evidence-no-longer-representative"],
+    "change_kind_alone_proves_preservation": false,
+    "change_kind_alone_proves_fundamental_change": false
+  },
+  "security_boundary": {
+    "prohibited_inferences": ["TRL 9 => secure", "TRL 9 => low risk", "TRL 9 => low criticality", "TRL 9 => security approved"],
+    "technical_security_qualification_may_affect_r8": true,
+    "independent_security_approval_is_separate_gate": true
+  },
+  "decision_cases": [
+    {"id": 1, "fixture_required": true}, {"id": 2, "fixture_required": true}, {"id": 3, "fixture_required": true},
+    {"id": 4, "fixture_required": true}, {"id": 5, "fixture_required": true}, {"id": 6, "fixture_required": true},
+    {"id": 7, "fixture_required": true}, {"id": 8, "fixture_required": true}, {"id": 9, "fixture_required": true},
+    {"id": 10, "fixture_required": true}, {"id": 11, "fixture_required": true}, {"id": 12, "fixture_required": true},
+    {"id": 13, "fixture_required": true}, {"id": 14, "fixture_required": true}, {"id": 15, "fixture_required": true},
+    {"id": 16, "fixture_required": true}, {"id": 17, "fixture_required": true}, {"id": 18, "fixture_required": true}
+  ],
+  "error_classes": [
+    "E_SCHEMA", "E_UNKNOWN_FIELD", "E_AUTHORED_CURRENT_READINESS", "E_APPLICABILITY", "E_RATIONALE_REQUIRED",
+    "E_SUBJECT_REQUIRED", "E_SUBJECT_KIND", "E_SUBJECT_IDENTITY", "E_DUPLICATE_SUBJECT", "E_TARGET", "E_STAGE",
+    "E_ASSESSMENT", "E_CRITERION", "E_EVIDENCE_CLASS", "E_MISSING_PROVENANCE", "E_SUBJECT_MISMATCH",
+    "E_REPOSITORY_MISMATCH", "E_REVISION_MISMATCH", "E_ARTIFACT_MISMATCH", "E_CONTRACT_MISMATCH", "E_CONTEXT_MISMATCH",
+    "E_EXPIRED_EVIDENCE", "E_UNKNOWN_NOT_SATISFIED", "E_EQUIVALENCE_REQUIRED", "E_QUALIFICATION_CONTEXT",
+    "E_OPERATIONAL_PROOF_INSUFFICIENT", "E_PRIOR_ESTABLISHMENT_REQUIRED", "E_LINEAGE", "E_REQUALIFICATION_REQUIRED", "E_SECURITY_INFERENCE"
+  ],
+  "masking_prohibited": ["skip", "xfail", "implicit-baseline-acceptance", "materially-over-broad-tolerance"]
+}

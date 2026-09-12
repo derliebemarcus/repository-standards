@@ -1,0 +1,14 @@
+version: 11
+standards:
+  ticket-specification: v5
+  development-workflow: v8
+  repository-documentation: v2
+  technology-baseline: v1
+  contract-first-delivery: v1
+  product-system-readiness: v1
+branching:
+  model: integration
+  default_branch: develop
+  integration_branch: develop
+  release_branch: main
+  multibranch_filter: "^(main|develop|PR-[0-9]+)$"

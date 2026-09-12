@@ -1,0 +1,565 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://git.home.siczb.de/siczb/repository-standards/schemas/ticket-specification-v5.schema.json",
+  "title": "Ticket Specification v5",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "title",
+    "assignee",
+    "areas",
+    "kind",
+    "priority",
+    "status",
+    "state",
+    "estimate",
+    "description",
+    "delivery",
+    "product_increment",
+    "relations",
+    "validation",
+    "impacts"
+  ],
+  "properties": {
+    "title": {"type": "string", "minLength": 1},
+    "assignee": {"type": "string", "minLength": 1, "default": "marcus"},
+    "areas": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^Area/.+"}
+    },
+    "kind": {
+      "enum": [
+        "Kind/Epic",
+        "Kind/Feature",
+        "Kind/Enhancement",
+        "Kind/Refactoring",
+        "Kind/Maintenance",
+        "Kind/Research",
+        "Kind/Bug",
+        "Kind/Security",
+        "Kind/Documentation",
+        "Kind/Testing"
+      ]
+    },
+    "priority": {
+      "enum": ["Priority/Critical", "Priority/High", "Priority/Normal", "Priority/Low"],
+      "default": "Priority/Low"
+    },
+    "status": {
+      "enum": [
+        "Status/Backlog",
+        "Status/Need More Info",
+        "Status/Blocked",
+        "Status/Ready",
+        "Status/In Progress",
+        "Status/Review",
+        "Status/Abandoned",
+        "Status/Done"
+      ],
+      "default": "Status/Backlog"
+    },
+    "state": {"enum": ["open", "closed"], "default": "open"},
+    "estimate": {
+      "oneOf": [
+        {"type": "integer", "enum": [1, 2, 3, 5, 8, 13]},
+        {"type": "null"}
+      ]
+    },
+    "description": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "context",
+        "goal",
+        "scope",
+        "requirements",
+        "acceptance_criteria",
+        "work_type_details"
+      ],
+      "properties": {
+        "context": {"type": "string"},
+        "goal": {"type": "string"},
+        "scope": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["in_scope", "out_of_scope", "affected_components"],
+          "properties": {
+            "in_scope": {"type": "array", "items": {"type": "string"}},
+            "out_of_scope": {"type": "array", "items": {"type": "string"}},
+            "affected_components": {"type": "array", "items": {"type": "string"}}
+          }
+        },
+        "requirements": {"type": "array", "items": {"type": "string"}},
+        "acceptance_criteria": {"type": "array", "items": {"type": "string"}},
+        "work_type_details": {"type": "string"}
+      }
+    },
+    "delivery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model",
+        "applicability",
+        "rationale",
+        "role",
+        "design_contracts",
+        "test_contracts",
+        "evidence"
+      ],
+      "properties": {
+        "model": {"const": "contract-first-v1"},
+        "applicability": {"enum": ["required", "not-applicable"]},
+        "rationale": {
+          "oneOf": [
+            {"type": "string", "minLength": 1},
+            {"type": "null"}
+          ]
+        },
+        "role": {
+          "oneOf": [
+            {
+              "enum": [
+                "design-contract",
+                "test-contract",
+                "implementation",
+                "conformance-evidence"
+              ]
+            },
+            {"type": "null"}
+          ]
+        },
+        "design_contracts": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/contractReference"}
+        },
+        "test_contracts": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/contractReference"}
+        },
+        "evidence": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/artifactReference"}
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"applicability": {"const": "not-applicable"}},
+            "required": ["applicability"]
+          },
+          "then": {
+            "properties": {
+              "rationale": {"type": "string", "minLength": 1},
+              "role": {"type": "null"},
+              "design_contracts": {"maxItems": 0},
+              "test_contracts": {"maxItems": 0},
+              "evidence": {"maxItems": 0}
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {"applicability": {"const": "required"}},
+            "required": ["applicability"]
+          },
+          "then": {
+            "properties": {
+              "role": {
+                "enum": [
+                  "design-contract",
+                  "test-contract",
+                  "implementation",
+                  "conformance-evidence"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "applicability": {"const": "required"},
+              "role": {"const": "test-contract"}
+            },
+            "required": ["applicability", "role"]
+          },
+          "then": {"properties": {"design_contracts": {"minItems": 1}}}
+        },
+        {
+          "if": {
+            "properties": {
+              "applicability": {"const": "required"},
+              "role": {"const": "implementation"}
+            },
+            "required": ["applicability", "role"]
+          },
+          "then": {
+            "properties": {
+              "design_contracts": {"minItems": 1},
+              "test_contracts": {"minItems": 1}
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "applicability": {"const": "required"},
+              "role": {"const": "conformance-evidence"}
+            },
+            "required": ["applicability", "role"]
+          },
+          "then": {
+            "properties": {
+              "design_contracts": {"minItems": 1},
+              "test_contracts": {"minItems": 1}
+            }
+          }
+        }
+      ]
+    },
+    "product_increment": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/productIncrement"}
+      ]
+    },
+    "relations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["parent", "blocked_by", "blocks", "related"],
+      "properties": {
+        "parent": {
+          "oneOf": [
+            {"type": "string"},
+            {"type": "null"}
+          ]
+        },
+        "blocked_by": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "blocks": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "related": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tests_or_research", "documentation"],
+      "properties": {
+        "tests_or_research": {"type": "string"},
+        "documentation": {"type": "string"}
+      }
+    },
+    "impacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["security", "compatibility", "deployment"],
+      "properties": {
+        "security": {"$ref": "#/$defs/impact"},
+        "compatibility": {"$ref": "#/$defs/impact"},
+        "deployment": {"$ref": "#/$defs/impact"}
+      }
+    },
+    "research_timebox": {
+      "oneOf": [
+        {"type": "string", "minLength": 1},
+        {"type": "null"}
+      ]
+    }
+  },
+  "$defs": {
+    "impact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classification", "detail"],
+      "properties": {
+        "classification": {
+          "enum": ["No impact", "Impact identified", "Not yet determined"]
+        },
+        "detail": {"type": "string"}
+      }
+    },
+    "contractReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["work_item", "artifact"],
+      "properties": {
+        "work_item": {
+          "oneOf": [
+            {"type": "string", "minLength": 1},
+            {"type": "null"}
+          ]
+        },
+        "artifact": {
+          "oneOf": [
+            {"$ref": "#/$defs/artifactReference"},
+            {"type": "null"}
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"artifact": {"type": "null"}},
+            "required": ["artifact"]
+          },
+          "then": {
+            "properties": {
+              "work_item": {"type": "string", "minLength": 1}
+            }
+          }
+        }
+      ]
+    },
+    "exactContractReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["work_item", "artifact"],
+      "properties": {
+        "work_item": {
+          "oneOf": [
+            {"type": "string", "minLength": 1},
+            {"type": "null"}
+          ]
+        },
+        "artifact": {"$ref": "#/$defs/artifactReference"}
+      }
+    },
+    "artifactReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "locator"],
+      "properties": {
+        "type": {"type": "string", "minLength": 1},
+        "locator": {"type": "string", "minLength": 1},
+        "revision": {"type": "string", "minLength": 1},
+        "digest": {"type": "string", "minLength": 1}
+      },
+      "anyOf": [
+        {"required": ["revision"]},
+        {"required": ["digest"]}
+      ]
+    },
+    "productIncrement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "subject_identity",
+        "stage",
+        "readiness_target",
+        "assessment"
+      ],
+      "properties": {
+        "kind": {"enum": ["product", "release"]},
+        "subject_identity": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 160,
+          "pattern": "^(product|system):[a-z0-9](?:[a-z0-9._/-]*[a-z0-9])?$"
+        },
+        "stage": {"type": "string", "minLength": 1, "pattern": ".*\\S.*"},
+        "readiness_target": {"type": "integer", "minimum": 1, "maximum": 9},
+        "assessment": {
+          "oneOf": [
+            {"type": "null"},
+            {"$ref": "#/$defs/artifactReference"}
+          ]
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"kind": {"const": "Kind/Epic"}}},
+      "then": {"properties": {"estimate": {"type": "null"}}}
+    },
+    {
+      "if": {"properties": {"kind": {"not": {"const": "Kind/Epic"}}}},
+      "then": {"properties": {"product_increment": {"type": "null"}}}
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {"const": "Status/Ready"},
+          "kind": {"not": {"const": "Kind/Epic"}}
+        },
+        "required": ["status", "kind"]
+      },
+      "then": {
+        "properties": {
+          "estimate": {"type": "integer", "enum": [1, 2, 3, 5, 8, 13]}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"kind": {"const": "Kind/Research"}}},
+      "then": {
+        "required": ["research_timebox"],
+        "properties": {"research_timebox": {"type": "string", "minLength": 1}}
+      }
+    },
+    {
+      "if": {
+        "properties": {"state": {"const": "closed"}},
+        "required": ["state"]
+      },
+      "then": {"properties": {"status": {"const": "Status/Done"}}}
+    },
+    {
+      "if": {
+        "properties": {"state": {"const": "open"}},
+        "required": ["state"]
+      },
+      "then": {"properties": {"status": {"not": {"const": "Status/Done"}}}}
+    },
+    {
+      "if": {
+        "properties": {"status": {"const": "Status/Done"}},
+        "required": ["status"]
+      },
+      "then": {"properties": {"state": {"const": "closed"}}}
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": ["Status/Ready", "Status/In Progress", "Status/Review", "Status/Done"]
+          },
+          "delivery": {
+            "properties": {
+              "applicability": {"const": "required"},
+              "role": {"const": "test-contract"}
+            },
+            "required": ["applicability", "role"]
+          }
+        },
+        "required": ["status", "delivery"]
+      },
+      "then": {
+        "properties": {
+          "delivery": {
+            "properties": {
+              "design_contracts": {
+                "items": {"$ref": "#/$defs/exactContractReference"}
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": ["Status/Ready", "Status/In Progress", "Status/Review", "Status/Done"]
+          },
+          "delivery": {
+            "properties": {
+              "applicability": {"const": "required"},
+              "role": {"const": "implementation"}
+            },
+            "required": ["applicability", "role"]
+          }
+        },
+        "required": ["status", "delivery"]
+      },
+      "then": {
+        "properties": {
+          "delivery": {
+            "properties": {
+              "design_contracts": {
+                "items": {"$ref": "#/$defs/exactContractReference"}
+              },
+              "test_contracts": {
+                "items": {"$ref": "#/$defs/exactContractReference"}
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": ["Status/Ready", "Status/In Progress", "Status/Review", "Status/Done"]
+          },
+          "delivery": {
+            "properties": {
+              "applicability": {"const": "required"},
+              "role": {"const": "conformance-evidence"}
+            },
+            "required": ["applicability", "role"]
+          }
+        },
+        "required": ["status", "delivery"]
+      },
+      "then": {
+        "properties": {
+          "delivery": {
+            "properties": {
+              "design_contracts": {
+                "items": {"$ref": "#/$defs/exactContractReference"}
+              },
+              "test_contracts": {
+                "items": {"$ref": "#/$defs/exactContractReference"}
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {"const": "Status/Done"},
+          "delivery": {
+            "properties": {
+              "applicability": {"const": "required"},
+              "role": {"const": "implementation"}
+            },
+            "required": ["applicability", "role"]
+          }
+        },
+        "required": ["status", "delivery"]
+      },
+      "then": {
+        "properties": {
+          "delivery": {"properties": {"evidence": {"minItems": 1}}}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {"const": "Kind/Epic"},
+          "status": {"const": "Status/Done"},
+          "product_increment": {"type": "object"}
+        },
+        "required": ["kind", "status", "product_increment"]
+      },
+      "then": {
+        "properties": {
+          "product_increment": {
+            "properties": {
+              "assessment": {"$ref": "#/$defs/artifactReference"}
+            }
+          }
+        }
+      }
+    }
+  ]
+}

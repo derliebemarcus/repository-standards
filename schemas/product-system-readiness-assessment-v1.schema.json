@@ -1,0 +1,257 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://git.home.siczb.de/siczb/repository-standards/schemas/product-system-readiness-assessment-v1.schema.json",
+  "title": "Product/System Readiness v1 Assessment and Evidence Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "mode",
+    "subject",
+    "repository",
+    "source_revision",
+    "artifact",
+    "contract_set",
+    "qualification_context",
+    "evidence",
+    "evaluation_time"
+  ],
+  "properties": {
+    "schema": {"const": "product-system-readiness-assessment-v1"},
+    "mode": {"enum": ["establishment", "preservation", "requalification"]},
+    "subject": {"$ref": "#/$defs/subject"},
+    "repository": {"type": "string", "minLength": 1},
+    "source_revision": {"type": "string", "minLength": 1},
+    "artifact": {"oneOf": [{"$ref": "#/$defs/artifact"}, {"type": "null"}]},
+    "contract_set": {"$ref": "#/$defs/contractSet"},
+    "qualification_context": {"oneOf": [{"$ref": "#/$defs/qualificationContext"}, {"type": "null"}]},
+    "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidenceItem"}},
+    "prior_established": {"$ref": "#/$defs/priorEstablished"},
+    "change_impact": {"$ref": "#/$defs/changeImpact"},
+    "evaluation_time": {"type": "string", "format": "date-time"}
+  },
+  "allOf": [
+    {"if": {"properties": {"mode": {"enum": ["preservation", "requalification"]}}}, "then": {"required": ["prior_established"]}},
+    {"if": {"properties": {"mode": {"const": "preservation"}}}, "then": {"required": ["change_impact"]}}
+  ],
+  "$defs": {
+    "criterion": {
+      "enum": [
+        "R1.1", "R1.2", "R1.3", "R1.4",
+        "R2.1", "R2.2", "R2.3", "R2.4",
+        "R3.1", "R3.2", "R3.3", "R3.4", "R3.5",
+        "R4.1", "R4.2", "R4.3", "R4.4", "R4.5",
+        "R5.1", "R5.2", "R5.3", "R5.4", "R5.5",
+        "R6.1", "R6.2", "R6.3", "R6.4", "R6.5",
+        "R7.1", "R7.2", "R7.3", "R7.4", "R7.5",
+        "R8.1", "R8.2", "R8.3", "R8.4", "R8.5", "R8.6", "R8.7",
+        "R9.1", "R9.2", "R9.3", "R9.4", "R9.5", "R9.6"
+      ]
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "identity"],
+      "properties": {
+        "kind": {"enum": ["product", "system"]},
+        "identity": {"type": "string", "minLength": 1}
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["identity"],
+      "properties": {
+        "identity": {"type": "string", "minLength": 1},
+        "digest": {"type": "string", "minLength": 1},
+        "release_state": {"enum": ["non-release", "release-candidate", "release"]}
+      }
+    },
+    "contractReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["locator"],
+      "properties": {
+        "locator": {"type": "string", "minLength": 1},
+        "revision": {"type": "string", "minLength": 1},
+        "digest": {"type": "string", "minLength": 1}
+      },
+      "anyOf": [{"required": ["revision"]}, {"required": ["digest"]}]
+    },
+    "contractSet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["design", "test"],
+      "properties": {
+        "design": {"$ref": "#/$defs/contractReference"},
+        "test": {"$ref": "#/$defs/contractReference"}
+      }
+    },
+    "dimension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": {"enum": ["equivalent", "qualified-difference", "not-applicable"]},
+        "evidence": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "rationale": {"type": "string", "minLength": 1}
+      }
+    },
+    "qualificationContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "environment_name", "intended_context", "material_dimensions", "dimensions", "limitations"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "environment_name": {"type": "string", "minLength": 1},
+        "intended_context": {"type": "string", "minLength": 1},
+        "material_dimensions": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "dimensions": {"type": "object", "additionalProperties": {"$ref": "#/$defs/dimension"}},
+        "limitations": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "resultLocator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["result", "locator"],
+      "properties": {
+        "result": {"enum": ["pass", "fail", "unknown"]},
+        "locator": {"type": "string", "minLength": 1}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subject", "repository", "source_revision", "artifact", "contract_set", "tool", "runner", "runner_version", "parameters", "timestamp", "report_locator"],
+      "properties": {
+        "subject": {"$ref": "#/$defs/subject"},
+        "repository": {"type": "string", "minLength": 1},
+        "source_revision": {"type": "string", "minLength": 1},
+        "artifact": {"oneOf": [{"$ref": "#/$defs/artifact"}, {"type": "null"}]},
+        "contract_set": {"$ref": "#/$defs/contractSet"},
+        "build_ci": {"$ref": "#/$defs/resultLocator"},
+        "security": {"$ref": "#/$defs/resultLocator"},
+        "accessibility": {"$ref": "#/$defs/resultLocator"},
+        "deployment": {"$ref": "#/$defs/resultLocator"},
+        "operations": {"$ref": "#/$defs/resultLocator"},
+        "tool": {"type": "string", "minLength": 1},
+        "runner": {"type": "string", "minLength": 1},
+        "runner_version": {"type": "string", "minLength": 1},
+        "parameters": {"type": "object"},
+        "timestamp": {"type": "string", "format": "date-time"},
+        "report_locator": {"type": "string", "minLength": 1}
+      }
+    },
+    "operationalProof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actual_use", "real_context", "actors_or_workload", "sufficiency_boundary", "success", "incidents_evaluated", "sustaining_ownership", "traceability"],
+      "properties": {
+        "actual_use": {"type": "boolean"},
+        "real_context": {"type": "boolean"},
+        "actors_or_workload": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "sufficiency_boundary": {
+          "oneOf": [
+            {"type": "null"},
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["predefined", "kind", "value"],
+              "properties": {
+                "predefined": {"type": "boolean"},
+                "kind": {"type": "string", "minLength": 1},
+                "value": {"type": "string", "minLength": 1}
+              }
+            }
+          ]
+        },
+        "success": {"type": "boolean"},
+        "incidents_evaluated": {"type": "boolean"},
+        "sustaining_ownership": {"type": "boolean"},
+        "traceability": {"type": "array", "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "equivalence": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["dimensions", "criteria", "argument", "evidence"],
+          "properties": {
+            "dimensions": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["source_revision", "artifact", "qualification_context"]}},
+            "criteria": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/criterion"}},
+            "argument": {"type": "string", "minLength": 1},
+            "evidence": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+          }
+        }
+      ]
+    },
+    "validity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["boundaries"],
+      "properties": {
+        "valid_from": {"type": "string", "format": "date-time"},
+        "valid_until": {"type": "string", "format": "date-time"},
+        "boundaries": {"type": "array", "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "evidenceItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "criteria", "classes", "result", "provenance", "qualification_context_id", "operational", "equivalence", "limitations", "validity"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "criteria": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/criterion"}},
+        "classes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "result": {"enum": ["pass", "fail", "unknown"]},
+        "provenance": {"$ref": "#/$defs/provenance"},
+        "qualification_context_id": {"type": ["string", "null"]},
+        "operational": {"oneOf": [{"$ref": "#/$defs/operationalProof"}, {"type": "null"}]},
+        "equivalence": {"$ref": "#/$defs/equivalence"},
+        "limitations": {"type": "array", "items": {"type": "string"}},
+        "validity": {"$ref": "#/$defs/validity"}
+      }
+    },
+    "priorEstablished": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subject", "source_revision", "artifact", "level", "evidence_locator"],
+      "properties": {
+        "subject": {"$ref": "#/$defs/subject"},
+        "source_revision": {"type": "string", "minLength": 1},
+        "artifact": {"oneOf": [{"$ref": "#/$defs/artifact"}, {"type": "null"}]},
+        "level": {"type": "integer", "minimum": 1, "maximum": 9},
+        "evidence_locator": {"type": "string", "minLength": 1}
+      }
+    },
+    "changeImpact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["change_kind", "lineage_valid", "triggers", "material_boundary_crossed", "affected_criteria"],
+      "properties": {
+        "change_kind": {"type": "string", "minLength": 1},
+        "lineage_valid": {"type": "boolean"},
+        "triggers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "architecture-or-execution-model",
+              "critical-operating-or-failure-assumptions",
+              "operational-context-or-critical-integrations",
+              "operational-evidence-no-longer-representative",
+              "persistence-or-data-architecture",
+              "runtime-platform-or-infrastructure-model",
+              "subject-identity-or-material-scope",
+              "trust-boundary-or-security-architecture"
+            ]
+          }
+        },
+        "material_boundary_crossed": {"type": "boolean"},
+        "affected_criteria": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/criterion"}}
+      }
+    }
+  }
+}

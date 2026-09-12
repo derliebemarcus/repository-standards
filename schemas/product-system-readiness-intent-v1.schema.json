@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://git.home.siczb.de/siczb/repository-standards/schemas/product-system-readiness-intent-v1.schema.json",
+  "title": "Product/System Readiness v1 Declarative Intent Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "applicability",
+    "rationale",
+    "subjects"
+  ],
+  "properties": {
+    "schema": {
+      "const": "product-system-readiness-intent-v1"
+    },
+    "applicability": {
+      "enum": [
+        "required",
+        "not-applicable"
+      ]
+    },
+    "rationale": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "subjects": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/subject"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "applicability": {
+            "const": "required"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "subjects": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "applicability": {
+            "const": "not-applicable"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "rationale": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": ".*\\S.*"
+          },
+          "subjects": {
+            "maxItems": 0
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "trlTarget": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9
+    },
+    "incrementTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identity",
+        "target"
+      ],
+      "properties": {
+        "identity": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": ".*\\S.*"
+        },
+        "target": {
+          "$ref": "#/$defs/trlTarget"
+        },
+        "stage": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": ".*\\S.*"
+        }
+      }
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "identity",
+        "long_term_target"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "product",
+            "system"
+          ]
+        },
+        "identity": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": ".*\\S.*"
+        },
+        "long_term_target": {
+          "$ref": "#/$defs/trlTarget"
+        },
+        "stage": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": ".*\\S.*"
+        },
+        "increment_targets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/incrementTarget"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "contract": "product-system-readiness-declaration",
+  "version": "1.0.0",
+  "sidecar": ".product-readiness.yml",
+  "schema": "schemas/product-system-readiness-declaration-v1.schema.json",
+  "test_contract_intent_schema": "schemas/product-system-readiness-intent-v1.schema.json",
+  "validator": "tools/product_system_readiness.py",
+  "governing_contracts": {
+    "design": {
+      "work_item": "siczb/repository-standards#58",
+      "locator": "standards/product-system-readiness/v1/standard.md",
+      "revision": "fa10d783440c4a798f3fe5b6fa55ac6166ce77da",
+      "digest": "2729a92f5a35091b0ca28b7eda361007fa7b0c6f"
+    },
+    "test": {
+      "work_item": "siczb/repository-standards#59",
+      "locator": "profiles/product-system-readiness-test-contract-v1.json",
+      "revision": "a8fa9519a97f188d5918aee79d5203f3f8deb25d",
+      "digest": "bd96ed63fb0d0774ba856d6d39abff17eb6516c1"
+    }
+  },
+  "authored": [
+    "applicability",
+    "subject.kind",
+    "subject.identity",
+    "subject.long_term_target",
+    "subject.stage"
+  ],
+  "ticket_owned_authored": [
+    "product_increment.stage",
+    "product_increment.readiness_target"
+  ],
+  "derived": [
+    "candidate",
+    "assessed",
+    "established",
+    "preservation",
+    "requalification"
+  ],
+  "subject_identity": {
+    "format": "<kind>:<stable-id>",
+    "kind_prefix_must_match": true,
+    "mutable_branch_environment_url_artifact_tag_or_profile_forbidden": true
+  },
+  "repository_aggregation": "forbidden",
+  "applicability_source": "declaration-only",
+  "migration": "explicit-opt-in",
+  "fail_closed": true
+}

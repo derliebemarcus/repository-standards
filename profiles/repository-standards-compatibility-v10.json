@@ -1,0 +1,31 @@
+{
+  "contract": "repository-standards-compatibility",
+  "version": "10.0.0",
+  "supersedes": "profiles/repository-standards-compatibility-v9.json",
+  "pairings": [
+    {"declaration_schema":"v1","schema":"schemas/repository-standards-v1.schema.json","ticket_specification":"v1","development_workflow":"v2","repository_documentation":"v1","status":"supported"},
+    {"declaration_schema":"v2","schema":"schemas/repository-standards-v2.schema.json","ticket_specification":"v2","development_workflow":"v3","repository_documentation":"v1","status":"supported"},
+    {"declaration_schema":"v3","schema":"schemas/repository-standards-v3.schema.json","ticket_specification":"v2","development_workflow":"v3","repository_documentation":"v1","web_application_baseline":"v1","deployment_environments":"v1","status":"supported"},
+    {"declaration_schema":"v4","schema":"schemas/repository-standards-v4.schema.json","ticket_specification":"v2","development_workflow":"v4","repository_documentation":"v1","status":"supported"},
+    {"declaration_schema":"v4","schema":"schemas/repository-standards-v4.schema.json","ticket_specification":"v2","development_workflow":"v4","repository_documentation":"v1","web_application_baseline":"v1","deployment_environments":"v1","status":"supported"},
+    {"declaration_schema":"v5","schema":"schemas/repository-standards-v5.schema.json","ticket_specification":"v3","development_workflow":"v5","repository_documentation":"v1","status":"supported"},
+    {"declaration_schema":"v5","schema":"schemas/repository-standards-v5.schema.json","ticket_specification":"v3","development_workflow":"v5","repository_documentation":"v1","web_application_baseline":"v1","deployment_environments":"v1","status":"supported"},
+    {"declaration_schema":"v6","schema":"schemas/repository-standards-v6.schema.json","ticket_specification":"v3","development_workflow":"v5","repository_documentation":"v1","technology_baseline":"v1","status":"supported"},
+    {"declaration_schema":"v6","schema":"schemas/repository-standards-v6.schema.json","ticket_specification":"v3","development_workflow":"v5","repository_documentation":"v1","technology_baseline":"v1","web_application_baseline":"v1","deployment_environments":"v1","status":"supported"},
+    {"declaration_schema":"v7","schema":"schemas/repository-standards-v7.schema.json","ticket_specification":"v3","development_workflow":"v6","repository_documentation":"v1","technology_baseline":"v1","status":"supported"},
+    {"declaration_schema":"v7","schema":"schemas/repository-standards-v7.schema.json","ticket_specification":"v3","development_workflow":"v6","repository_documentation":"v1","technology_baseline":"v1","web_application_baseline":"v1","deployment_environments":"v1","status":"supported"},
+    {"declaration_schema":"v8","schema":"schemas/repository-standards-v8.schema.json","ticket_specification":"v3","development_workflow":"v7","repository_documentation":"v2","technology_baseline":"v1","status":"supported"},
+    {"declaration_schema":"v8","schema":"schemas/repository-standards-v8.schema.json","ticket_specification":"v3","development_workflow":"v7","repository_documentation":"v2","technology_baseline":"v1","web_application_baseline":"v1","deployment_environments":"v1","status":"supported"},
+    {"declaration_schema":"v9","schema":"schemas/repository-standards-v9.schema.json","ticket_specification":"v4","development_workflow":"v8","repository_documentation":"v2","technology_baseline":"v1","contract_first_delivery":"v1","status":"supported","activation":"requires-compatible-contract-first-automation"},
+    {"declaration_schema":"v9","schema":"schemas/repository-standards-v9.schema.json","ticket_specification":"v4","development_workflow":"v8","repository_documentation":"v2","technology_baseline":"v1","contract_first_delivery":"v1","web_application_baseline":"v2","deployment_environments":"v1","status":"supported","activation":"requires-qualified-web-conformance-automation"},
+    {"declaration_schema":"v10","schema":"schemas/repository-standards-v10.schema.json","ticket_specification":"v4","development_workflow":"v8","repository_documentation":"v2","technology_baseline":"v1","contract_first_delivery":"v1","status":"supported","activation":"requires-compatible-contract-first-automation"},
+    {"declaration_schema":"v10","schema":"schemas/repository-standards-v10.schema.json","ticket_specification":"v4","development_workflow":"v8","repository_documentation":"v2","technology_baseline":"v1","contract_first_delivery":"v1","web_application_baseline":"v3","deployment_environments":"v1","repository_localization":"v1","status":"supported","activation":"requires-qualified-web-v3-conformance-and-valid-localization"},
+    {"declaration_schema":"v11","schema":"schemas/repository-standards-v11.schema.json","ticket_specification":"v5","development_workflow":"v8","repository_documentation":"v2","technology_baseline":"v1","contract_first_delivery":"v1","product_system_readiness":"v1","status":"supported","activation":"requires-compatible-ticket-v5-and-product-system-readiness-v1-automation"},
+    {"declaration_schema":"v11","schema":"schemas/repository-standards-v11.schema.json","ticket_specification":"v5","development_workflow":"v8","repository_documentation":"v2","technology_baseline":"v1","contract_first_delivery":"v1","product_system_readiness":"v1","web_application_baseline":"v3","deployment_environments":"v1","repository_localization":"v1","status":"supported","activation":"requires-compatible-ticket-v5-product-system-readiness-v1-and-qualified-web-v3-automation"}
+  ],
+  "unsupported_pairing_policy": "reject",
+  "consumer_activation": "explicit-release-pinned-migration",
+  "v9_activation_policy": "fail-closed-until-compatible-enforcement-is-qualified",
+  "v10_activation_policy": "fail-closed-until-compatible-enforcement-and-required-sidecars-are-qualified",
+  "v11_activation_policy": "supported-after-qualified-release; explicit-release-pinned-migration-and-compatible-automation-required"
+}

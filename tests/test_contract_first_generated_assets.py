@@ -26,6 +26,9 @@ class ContractFirstGeneratedAssetsTest(unittest.TestCase):
     def test_ticket_v4_assets_are_current(self) -> None:
         self.run_check("render_ticket_assets_v4.py")
 
+    def test_ticket_v5_assets_are_current(self) -> None:
+        self.run_check("render_ticket_assets_v5.py")
+
     def test_development_workflow_v8_adapter_is_current(self) -> None:
         self.run_check("render_development_workflow_assets_v8.py")
 

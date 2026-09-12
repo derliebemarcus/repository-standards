@@ -2,280 +2,166 @@
 
 ## Versioning model
 
-`standard_version` identifies a semantic contract. Consumers continue to receive their pinned
-version behavior until they explicitly migrate. Published standards, schemas, compatibility
-profiles, and reference declarations are immutable.
-
-`ruleset_version` uses semantic versioning inside one standard version:
-
-- patch: corrections and clarifications that add no obligation;
-- minor: backward-compatible capabilities, optional fields, and opt-in checks;
-- major: a new standard version when obligations or semantics change incompatibly.
+A published standard version is a semantic contract. Consumers keep the behavior of their pinned
+contract set until they explicitly migrate. Published standards, schemas, compatibility profiles,
+generated adapters/templates, and released reference declarations are immutable.
 
 Repository declarations are versioned compatibility contracts. Unsupported combinations MUST fail
 validation rather than being guessed, coerced, or silently upgraded.
 
-## Canonical compatibility profile
+## Canonical compatibility profiles
 
-The current additive compatibility matrix is
-`profiles/repository-standards-compatibility-v7.json`. Earlier compatibility profiles remain
-immutable for consumers pinned to older releases.
+Compatibility profiles are additive and immutable after release. Product/System Readiness v1 adds:
 
-| Declaration | Ticket Specification | Development Workflow | Repository Documentation | Technology Baseline | Web Application Baseline | Deployment Environments | Status |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| v1 | v1 | v2 | v1 | — | — | — | Supported |
-| v2 | v2 | v3 | v1 | — | — | — | Supported |
-| v3 | v2 | v3 | v1 | — | v1 | v1 | Supported |
-| v4 | v2 | v4 | v1 | — | — | — | Supported |
-| v4 | v2 | v4 | v1 | — | v1 | v1 | Supported |
-| v5 | v3 | v5 | v1 | — | — | — | Supported |
-| v5 | v3 | v5 | v1 | — | v1 | v1 | Supported |
-| v6 | v3 | v5 | v1 | v1 | — | — | Supported |
-| v6 | v3 | v5 | v1 | v1 | v1 | v1 | Supported |
-| v7 | v3 | v6 | v1 | v1 | — | — | Supported |
-| v7 | v3 | v6 | v1 | v1 | v1 | v1 | Supported |
-| v8 | v3 | v7 | v2 | v1 | — | — | Supported |
-| v8 | v3 | v7 | v2 | v1 | v1 | v1 | Supported |
+```text
+profiles/repository-standards-compatibility-v10.json
+```
 
-No other pairing is supported.
+It supersedes v9 by copying every v9 pairing unchanged and appending declaration-v11 pairings.
+Repository Standards v9.3.0 is the first release in which those v11 pairings are `supported`.
+Earlier compatibility profiles remain authoritative for releases that pin them.
 
-Released reference declarations are grouped by declaration version under `reference/`. Declaration
-v8 references are:
+The machine-readable profile is the exact source of pairing truth. Documentation MUST NOT mutate an
+older profile to add a new declaration or capability.
 
-- `repository-standards-v8.single.yml`;
-- `repository-standards-v8.integration.yml`;
-- `repository-standards-v8.web.single.yml`; and
-- `repository-standards-v8.web.integration.yml`.
+## Released compatibility remains unchanged
 
-Changing declaration schema or a selected standard version is an explicit repository migration.
+Declaration versions v1-v10 and their released pairings continue to mean exactly what their pinned
+compatibility profiles define. Product/System Readiness v1 publication does not retrofit any of
+these consumers.
 
-## Repository Documentation compatibility
+In particular:
 
-### Repository Documentation v1
+- Ticket Specification v1-v4 remain immutable;
+- declaration schemas v1-v10 remain immutable;
+- existing Repository Documentation, Development Workflow, Technology Baseline, web/deployment,
+  Contract-first Delivery, Repository Environments, and Repository Localization pairings remain
+  unchanged; and
+- a repository that does not adopt declaration v11 keeps its existing behavior.
 
-Repository Documentation v1 remains the immutable documentation contract for declaration v1 through
-v7 pairings. Publication of v2 does not change a v1 consumer.
+## Declaration v11 supported pairing
 
-### Repository Documentation v2
+Declaration v11 is additive. Its core supported pairing selects:
 
-Repository Documentation v2 introduces purpose-specific normative quality criteria for Tutorial,
-How-to Guide, Reference, Explanation, Architecture, Decision / ADR, Operations / Runbook,
-Verification / Evidence, and Index / Navigation. Verification becomes an explicit point-in-time
-evidence class rather than ordinary Reference documentation.
+| Capability | Version |
+| --- | --- |
+| Ticket Specification | v5 |
+| Development Workflow | v8 |
+| Repository Documentation | v2 |
+| Technology Baseline | v1 |
+| Contract-first Delivery | v1 |
+| Product/System Readiness | v1 |
 
-Those are new obligations, so v2 is selected only by declaration v8. Declaration v7 + Repository
-Documentation v2 and declaration v8 + Repository Documentation v1 are unsupported and fail closed.
+The web pairing additionally selects Web Application Baseline v3 and Deployment Environments v1,
+with Repository Localization v1 represented in the compatibility profile where applicable.
 
-See `../repository-documentation-v2-migration.md` and
-`../repository-contract-v8-migration.md`.
+Repository Standards v9.3.0 qualifies these pairings for explicit release-pinned adoption. The
+`status: supported` transition means that the portable contract set has passed its release and
+conformance gate; it does not migrate a consumer and does not imply that an arbitrary consumer's
+active writers, validators, or provider automation are compatible. The activation metadata remains
+fail-closed and requires compatible Ticket Specification v5 and Product/System Readiness v1
+automation before migration. Web consumers retain the additional qualified Web v3 requirements.
+
+## Product/System Readiness compatibility boundary
+
+Product/System Readiness applicability is not inferred from the Repository Standards declaration,
+Repository Profile, Repository Documentation Profile, web profile, or deployment profile. The
+Repository Standards declaration selects the capability version; `.product-readiness.yml` authors
+whether that capability is `required` or `not-applicable` for the repository and defines its
+Subjects when required.
+
+Ticket Specification v5 owns Product-/Release-Epic Increment Targets. The repository sidecar owns
+long-term Subject Targets. Neither target is derived from the other.
+
+Provider automation MUST preserve the following boundaries:
+
+```text
+authored intent != derived readiness
+target != candidate
+target != assessed
+target != established
+deployment != operational proof
+PROD != TRL 9
+product stage != TRL
+```
 
 ## Ticket Specification compatibility
 
-### Ticket Specification v1
+### v1-v4
 
-Ticket Specification v1 introduced mandatory metadata, description sections, readiness decisions,
-and relative Story Point semantics. It remains valid for the declaration v1 / Development Workflow
-v2 pairing.
+Ticket Specification v1-v4 keep their released semantics. v4 adds Contract-first Delivery metadata
+and remains the ticket contract for declaration v9/v10 consumers. Publication of v5 does not add a
+Product Increment section to v1-v4 tickets.
 
-### Ticket Specification v2
+### v5
 
-Ticket Specification v2 defines the canonical completed representation as Forgejo `state=closed`
-plus exactly `Status/Done`. An open issue must not carry `Status/Done`. It is paired with Development
-Workflow v3 under declarations v2/v3 and Development Workflow v4 under declaration v4.
+Ticket Specification v5 incorporates v4 and adds Product-/Release-Epic readiness increment intent.
+Every v5 ticket has a `product_increment` value; it is normally `null`. A non-null increment is
+allowed only for an Epic and carries authored Product Stage, stable Subject binding, and Increment
+Readiness Target plus an exact assessment reference when qualifying completion.
 
-### Ticket Specification v3
+Candidate, Assessed, Established, Preservation, Requalification, current, and actual readiness are
+not authored ticket fields. A readiness-targeted Epic cannot complete successfully without derived
+assessment evidence meeting its target.
 
-Ticket Specification v3 preserves v2 lifecycle semantics and adds canonical Story Point anchors for
-`1, 2, 3, 5, 8, 13`. Story Points MUST NOT be converted mechanically to hours, person-days,
-duration, staffing, file counts, task counts, lines of code, or another single proxy.
+## Product Stage compatibility
 
-It is paired with Development Workflow v5 under declarations v5/v6, Development Workflow v6 under
-declaration v7, and Development Workflow v7 under declaration v8.
+Product Stage and TRL are orthogonal across all Product/System Readiness integrations. `mvp` may
+reach TRL 9 for its defined scope; `production` implies no TRL. Migration tooling MUST NOT infer one
+dimension from the other.
 
-## Development Workflow compatibility
+## Security compatibility boundary
 
-### Development Workflow v2-v5
+TRL is not a security classification. A consumer or provider MUST NOT infer `secure`, `low risk`,
+`security approved`, or `low criticality` from TRL 9. Security/risk/exposure/data/criticality gates
+remain independent even when technical security evidence contributes to readiness qualification.
 
-Development Workflow v2 is paired with Ticket Specification v1 under declaration v1. Development
-Workflow v3 adopts Ticket Specification v2 lifecycle semantics while preserving v2 branching and
-release behavior. Development Workflow v4 adds released branch/pull-request naming and fail-closed
-pre-write validation. Development Workflow v5 preserves v4 behavior while coupling to Ticket
-Specification v3.
+## Migration
 
-### Development Workflow v6
+Changing declaration schema or selected standard versions is an explicit reviewed repository
+migration. Declaration v11 is available from Repository Standards v9.3.0 and MUST be pinned to an
+immutable release identity. Follow:
 
-Development Workflow v6 preserves v5 ticket, branch, release, Hotfix, review, merge, and pre-write
-semantics. It adds a provider-neutral identity contract for required quality gates.
+- `docs/repository-contract-v11-migration.md`;
+- `docs/ticket-standard-v5-migration.md`; and
+- `docs/reference/product-system-readiness.md`.
 
-A required gate has a logical identity independent from a provider's rendered check name. Provider
-adapters map that logical identity to a concrete check and MUST fail closed when the configured
-required context cannot be produced by an active workflow.
+A failed proposed migration does not invalidate the previously pinned declaration when the previous
+contract remains unchanged and conformant.
 
-For Forgejo/Gitea Actions the concrete context is:
+## Provider compatibility
 
-```text
-<workflow> / <job> (<event>)
-```
+Repository Standards remains the portable source of normative contracts. Jenkins and Maintenance
+may implement compatible validators and evaluators, but are provider implementations rather than
+prerequisites for interpreting the standard.
 
-The event is part of the provider-specific identity. Changing from `pull_request` to
-`pull_request_target` therefore changes the concrete context and MUST be handled as a coordinated
-workflow/branch-protection migration.
-
-For GitHub required status checks, normal workflows use job-based identities; reusable workflows add
-the reusable job. The event trigger, workflow name, and matrix are not part of the GitHub Required
-Status Check identity. A GitHub adapter MUST NOT invent a Forgejo/Gitea event suffix.
-
-Development Workflow v6 is selected by declaration v7 and remains immutable after publication.
-
-### Development Workflow v7
-
-Development Workflow v7 incorporates Development Workflow v6 and adds canonical pull-request
-supersession semantics. It is selected only by declaration v8.
-
-A superseded pull request MUST begin with exactly:
-
-```markdown
-# Superseded by / See other
-
-- #<successor-pr>
-```
-
-The heading is the first body content and is immediately followed by an unordered list containing at
-least one concrete successor pull-request reference. Each list item contains exactly one successor
-reference; explanatory prose is not allowed inside this leading block.
-
-The superseded pull request MUST also carry `Status/Superseded`. The label and leading body marker
-form one coherent state: one without the other is invalid. A superseded pull request MUST NOT be
-merged and SHOULD be closed once at least one successor exists and the relationship is recorded. The
-marker and label remain after closure.
-
-Validators SHOULD verify that successor pull requests exist, MUST reject direct self-reference, and
-MUST NOT infer supersession solely from branch similarity, title similarity, ticket number, comments,
-or closed state.
-
-Development Workflow v7 does not weaken or replace v6 required-check identity or trust-boundary
-requirements.
-
-## `pull_request_target` trust boundary
-
-`pull_request_target` evaluates the base/target branch context and may receive privileges or secrets
-that are unavailable to an untrusted pull-request workflow. Under Development Workflow v6 and v7, a
-privileged `pull_request_target` workflow MUST NOT execute, source, import, build, test, lint, or
-otherwise run pull-request-controlled code.
-
-It SHOULD be limited to base-branch policy, metadata, labels, comments, ticket linkage, and repository
-governance operations that do not execute untrusted PR content. A gate intended to validate proposed
-code MUST use an execution model that actually evaluates PR content under an appropriate untrusted
-code boundary.
-
-## Declaration schema compatibility
-
-Declarations v1-v5 preserve their published combinations and branching models. Publication of later
-standards does not migrate them implicitly.
-
-Declaration v6 adds Technology Baseline v1 while retaining Ticket Specification v3, Development
-Workflow v5, and Repository Documentation v1.
-
-Declaration v7 retains Technology Baseline v1 and changes Development Workflow v5 to v6. It is the
-explicit adoption boundary for provider-neutral required-check identities and provider mappings.
-
-Declaration v8 retains Ticket Specification v3 and Technology Baseline v1, changes Development
-Workflow v6 to v7, and changes Repository Documentation v1 to v2. It is the explicit adoption
-boundary for canonical pull-request supersession semantics and the purpose-specific documentation
-model including Verification / Evidence.
-
-## Web Application Baseline compatibility
-
-Web Application Baseline v1 defines canonical static legal/accessibility routes, shared application
-design/accessibility expectations, and artifact-state-dependent public provenance. It follows the
-repository's explicit Design System decision and does not itself force Design System adoption.
-
-Web Application Baseline v1 and Deployment Environments v1 are a paired opt-in extension wherever a
-declaration schema supports a web variant. Partial adoption is unsupported.
-
-## Deployment Environments compatibility
-
-Deployment Environments v1 reuses the selected Development Workflow branching model: `single` maps
-default DEV source to `main`; `integration` maps it to `develop`. Preview/PR is not a canonical
-environment, STAGE is optional, and PROD accepts only immutable final-release artifacts. Promotion
-and rollback select existing immutable artifacts rather than rebuilding application content.
-
-## Technology Baseline compatibility
-
-Technology Baseline v1 is mandatory in declarations v6, v7, and v8. It remains independently
-versioned and is not modified by Development Workflow v6/v7 or Repository Documentation v2.
-
-## Maintenance compatibility
-
-Maintenance may embed compatible validators and operational resources during migrations. Repository
-Standards remains the portable source of normative contracts; Jenkins and Maintenance are
-implementations, not prerequisites for interpreting or locally validating the standards.
-
-Repositories MUST NOT migrate to a newer declaration when active writing/enforcement automation
-cannot implement the selected contract. For v7/v8 consumers, Maintenance automation that manages
-required checks or branch protection must implement Development Workflow v6 provider mapping,
-producibility validation, coordinated migration, and `pull_request_target` trust-boundary rules.
-
-For declaration-v8 consumers, any Maintenance automation that writes or validates pull-request
-supersession metadata must additionally implement Development Workflow v7: exact leading body block,
-`Status/Superseded`, marker/label coherence, successor validation where supported, and the no-merge
-invariant. Maintenance validators that enforce Repository Documentation must also support the v2
-declaration and objective contract invariants without inventing editorial word-count or similar
-quality proxies.
-
-## Workboard compatibility
-
-Workboard owns ticket migration and dependency reconciliation. Its parser and migration tooling must
-pass compatibility tests against the released Ticket Specification profile and canonical relation
-headings before organization-wide ticket writes begin. Ticket Specification v3 does not require
-historical re-estimation.
-
-Pull-request supersession is Development Workflow metadata, not an issue lifecycle status. A
-consumer MUST NOT apply `Status/Superseded` to ordinary issues merely because the label shares the
-`Status/` prefix.
-
-## Forgejo workflow compatibility
-
-Forgejo remains the canonical automation provider. Active workflows are discovered from
-`.forgejo/workflows/`; `.github/workflows/` is not a supported active source after migration.
-GitHub-compatible workflow syntax may be retained only where Forgejo supports it.
-
-Required pull-request checks, protected-branch rules, review gates, manual-main-build requirements,
-and supersession semantics remain those of the selected Development Workflow. Under Development
-Workflow v6/v7 the logical required gate is portable, but the concrete status/check identity is
-provider-specific.
+A repository MUST NOT migrate to a newer declaration when active writing/enforcement automation
+cannot implement its selected contract. For declaration v11 this includes Product/System Readiness
+sidecar validation, Ticket Specification v5 parsing/writing, authored-versus-derived separation,
+and fail-closed Epic completion semantics. Productive evidence evaluation/gate activation is a
+separate provider capability and is not activated merely by publication of Repository Standards
+v9.3.0.
 
 ## Published-artifact immutability
 
-Tests protect previously released standards, compatibility profiles, schemas, generated adapters,
+Tests protect released standards, schemas, compatibility profiles, generated adapters/templates,
 and reference declarations by Git blob SHA or equivalent regression assertions. New contract
-versions MUST be introduced as new files. Existing released files MUST NOT be edited to add fields,
+versions are introduced as new files. Existing released files MUST NOT be edited to add fields,
 pairings, or semantics.
-
-Development Workflow v7, Repository Documentation v2, declaration schema v8, and compatibility
-profile v7 extend the contract set without modifying Development Workflow v6, Repository
-Documentation v1, declaration schemas v1-v7, or compatibility profiles v1-v6.
 
 ## Failure behavior
 
-Validation fails rather than guessing when:
+Validation fails rather than guessing when, among other cases:
 
-- declaration/standard pairings are unsupported;
+- a declaration/standard pairing is unsupported;
 - a required contract field is missing;
-- a consumer attempts partial web/deployment adoption;
-- a branch or ticket-linked pull request violates its released naming contract;
-- a required concrete status/check context cannot be produced by an active workflow;
-- a provider mapping substitutes another provider's status-identity semantics;
-- a privileged `pull_request_target` workflow would execute pull-request-controlled code;
-- a superseded pull request has the leading supersession marker without `Status/Superseded`;
-- `Status/Superseded` exists without the canonical leading successor block;
-- a superseded pull request is treated as a merge candidate;
-- artifact release state is ambiguous;
-- PROD could receive an unreleased artifact; or
-- consumer automation is not compatible with the selected contract set.
-
-Failure of a proposed migration does not invalidate the previously pinned declaration when that
-previous contract remains unchanged and conformant.
+- a v11 repository omits the Product/System Readiness selection;
+- Product/System Readiness applicability is inferred instead of authored;
+- a readiness declaration contains unknown or derived/current readiness fields;
+- a Product-/Release-Epic attempts `Status/Done` without qualifying evidence;
+- Product Stage is used to manufacture a TRL;
+- deployment or PROD presence is used as operational proof; or
+- consumer automation is incompatible with the selected contract set.
 
 ## Deprecation
 

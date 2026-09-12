@@ -1,0 +1,245 @@
+{
+  "standard": "ticket-specification",
+  "version": "5.0.0",
+  "normative_source": "standards/ticket-specification/v5/standard.md",
+  "schema": "schemas/ticket-specification-v5.schema.json",
+  "incorporates": "profiles/ticket-specification-v4.json",
+  "defaults": {
+    "assignee": "marcus",
+    "priority": "Priority/Low",
+    "status": "Status/Backlog"
+  },
+  "label_categories": {
+    "area": {"prefix": "Area/", "minimum": 1, "maximum": null},
+    "kind": {
+      "prefix": "Kind/",
+      "minimum": 1,
+      "maximum": 1,
+      "values": [
+        "Kind/Epic",
+        "Kind/Feature",
+        "Kind/Enhancement",
+        "Kind/Refactoring",
+        "Kind/Maintenance",
+        "Kind/Research",
+        "Kind/Bug",
+        "Kind/Security",
+        "Kind/Documentation",
+        "Kind/Testing"
+      ]
+    },
+    "priority": {
+      "prefix": "Priority/",
+      "minimum": 1,
+      "maximum": 1,
+      "values": ["Priority/Critical", "Priority/High", "Priority/Normal", "Priority/Low"],
+      "deprecated": ["Priority/Medium"]
+    },
+    "status": {
+      "prefix": "Status/",
+      "minimum": 1,
+      "maximum": 1,
+      "values": [
+        "Status/Backlog",
+        "Status/Need More Info",
+        "Status/Blocked",
+        "Status/Ready",
+        "Status/In Progress",
+        "Status/Review",
+        "Status/Abandoned",
+        "Status/Done"
+      ]
+    },
+    "estimate": {
+      "prefix": "Estimate/",
+      "values": [1, 2, 3, 5, 8, 13],
+      "required_for_ready_leaf": true,
+      "forbidden_for_epic": true,
+      "split_threshold": 8
+    }
+  },
+  "estimation": {
+    "dimensions": ["effort", "complexity", "risk", "uncertainty"],
+    "assessment": "holistic-relative-assessment",
+    "forbidden_proxies": [
+      "hours",
+      "person-days",
+      "calendar-duration",
+      "staffing-level",
+      "file-count",
+      "task-count",
+      "lines-of-code",
+      "single-dimension"
+    ],
+    "anchors": [
+      {"value": 1, "summary": "Very small, clearly bounded change with a known solution and negligible uncertainty and risk."},
+      {"value": 2, "summary": "Small change with few affected concerns and low integration effort, risk, and uncertainty."},
+      {"value": 3, "summary": "Normal change with multiple coherent steps or moderate integration and manageable complexity, risk, and uncertainty."},
+      {"value": 5, "summary": "Larger coherent change spanning multiple components or layers, or carrying material complexity, risk, or uncertainty."},
+      {"value": 8, "summary": "Large but still responsibly deliverable as one ticket; typically cross-cutting and/or carrying substantial complexity, risk, or uncertainty."},
+      {"value": 13, "summary": "Exceptional estimate indicating work that is normally too large or too uncertain for a single Ready ticket."}
+    ],
+    "estimate_13": {
+      "exceptional": true,
+      "requires_documented_justification": true,
+      "requires_split_consideration": true
+    }
+  },
+  "lifecycle": {
+    "forgejo_states": ["open", "closed"],
+    "completed_status": "Status/Done",
+    "completed_state": "closed",
+    "open_state": "open",
+    "open_forbids_completed_status": true,
+    "closed_requires_completed_status": true,
+    "transition_order": "replacement-before-removal",
+    "reopen_requires_explicit_active_status": true,
+    "legacy_closed_read_compatibility": true,
+    "legacy_write_compatibility": false
+  },
+  "families": {
+    "epic": ["Kind/Epic"],
+    "story": ["Kind/Feature", "Kind/Enhancement", "Kind/Refactoring", "Kind/Maintenance", "Kind/Research"],
+    "bug": ["Kind/Bug"],
+    "security": ["Kind/Security"],
+    "documentation": ["Kind/Documentation"],
+    "testing": ["Kind/Testing"]
+  },
+  "branch_prefixes": {
+    "Kind/Feature": "feature",
+    "Kind/Enhancement": "enhancement",
+    "Kind/Refactoring": "refactoring",
+    "Kind/Maintenance": "maintenance",
+    "Kind/Research": "research",
+    "Kind/Bug": "bugfix",
+    "Kind/Security": "security",
+    "Kind/Documentation": "documentation",
+    "Kind/Testing": "test",
+    "hotfix": "hotfix"
+  },
+  "common_sections": [
+    "Context",
+    "Goal",
+    "Scope",
+    "Scope/In scope",
+    "Scope/Out of scope",
+    "Scope/Affected components",
+    "Requirements",
+    "Acceptance criteria",
+    "Work-type details",
+    "Product increment",
+    "Delivery contract",
+    "Relations",
+    "Relations/Parent",
+    "Relations/Blocked by",
+    "Relations/Blocks",
+    "Relations/Related",
+    "Validation",
+    "Validation/Tests or research validation",
+    "Validation/Documentation",
+    "Impact assessment",
+    "Impact assessment/Security",
+    "Impact assessment/Compatibility",
+    "Impact assessment/Deployment",
+    "Estimate"
+  ],
+  "relations": {
+    "direct_dependency_heading": "Blocked by",
+    "none_marker": "None",
+    "include_closed_tickets": true,
+    "reference_forms": [
+      "#123",
+      "repository#123",
+      "owner/repository#123",
+      "https://forgejo.example/owner/repository/issues/123"
+    ]
+  },
+  "impact_classifications": ["No impact", "Impact identified", "Not yet determined"],
+  "research": {
+    "requires_estimate": true,
+    "requires_timebox": true,
+    "required_outputs": [
+      "research question",
+      "evaluation criteria",
+      "method",
+      "evidence",
+      "limitations",
+      "decision artifact",
+      "follow-up tickets"
+    ]
+  },
+  "delivery": {
+    "required_for_every_ticket": true,
+    "body_heading": "Delivery contract",
+    "body_serialization": "single-fenced-yaml-document",
+    "root_key": "delivery",
+    "model": "contract-first-v1",
+    "applicability_values": ["required", "not-applicable"],
+    "roles": ["design-contract", "test-contract", "implementation", "conformance-evidence"],
+    "labels_are_source_of_truth": false,
+    "derived_labels_allowed": true,
+    "not_applicable": {
+      "rationale_required": true,
+      "role": null,
+      "contracts_must_be_empty": true,
+      "evidence_must_be_empty": true
+    },
+    "contract_reference": {
+      "unresolved_work_item_reference_allowed_before_ready": true,
+      "unresolved_reference_requires_work_item": true,
+      "unresolved_artifact_value": null,
+      "resolved_artifact_type_required": true,
+      "resolved_artifact_locator_required": true,
+      "resolved_revision_or_digest_required": true,
+      "resolved_work_item_optional": true,
+      "exact_artifact_required_at_ready": true
+    },
+    "role_requirements": {
+      "test-contract": {
+        "design_contract_reference_required": true,
+        "design_contract_exact_at_ready": true
+      },
+      "implementation": {
+        "design_contract_reference_required": true,
+        "test_contract_reference_required": true,
+        "design_contracts_exact_at_ready": true,
+        "test_contracts_exact_at_ready": true
+      },
+      "conformance-evidence": {
+        "design_contract_reference_required": true,
+        "test_contract_reference_required": true,
+        "contracts_exact_at_ready": true
+      }
+    },
+    "ready_freeze": "development-workflow-v8"
+  },
+  "product_increment": {
+    "required_for_every_ticket": true,
+    "default": null,
+    "non_null_allowed_only_for": "Kind/Epic",
+    "body_heading": "Product increment",
+    "body_serialization": "single-fenced-yaml-document",
+    "root_key": "product_increment",
+    "kinds": ["product", "release"],
+    "stage_is_authored": true,
+    "readiness_target_is_authored": true,
+    "readiness_target_range": [1, 9],
+    "current_readiness_authored": false,
+    "subject_identity_source": ".product-readiness.yml",
+    "long_term_target_source": ".product-readiness.yml",
+    "repository_trl_aggregation": "forbidden",
+    "stage_to_trl_inference": "forbidden",
+    "target_to_stage_inference": "forbidden",
+    "done_requires_exact_assessment_reference": true,
+    "done_requires_assessed_readiness_at_least_target": true,
+    "completion_validator": "tools/product_system_readiness.py",
+    "provider_evaluator": "out-of-scope"
+  },
+  "legacy_missing_information_marker": "Not recorded before Ticket Specification v1.",
+  "generated_assets": {
+    "template_directory": "reference/issue-templates-v5",
+    "templates": ["epic.md", "story.md", "bug.md", "security.md", "documentation.md", "testing.md"],
+    "ai_adapter": "reference/ai/ticket-authoring-v5.md",
+    "generator": "tools/render_ticket_assets_v5.py"
+  }
+}
